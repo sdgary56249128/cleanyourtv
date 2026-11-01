@@ -1,4 +1,16 @@
 {
   "background_color": "#070A14",
-  "wallpaper": true
+  "wallpaper": true,
+  "ambient_glow": false,
+  "dock_apps": [
+    "com.netflix.ninja",
+    "tw.com.gamer.android.animad",
+    "org.smarttube.stable",
+    "com.mxtech.videoplayer.ad"
+  ],
+  "columns": 4,
+  "show_inputs_pill": false,
+  "live_tv_package": "",
+  "stock_home_redirect": "com.google.android.apps.tv.launcherx",
+  "app_keys": ["190:org.smarttube.stable"]
 }
