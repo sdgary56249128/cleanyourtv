@@ -1,4 +1,17 @@
 {
   "wallpaper": true,
-  "wallpaper_rotation_minutes": 60
+  "wallpaper_rotation_minutes": 30,
+  "wallpaper_order": "sequential",
+  "ambient_glow": false,
+  "dock_apps": [
+    "com.netflix.ninja",
+    "tw.com.gamer.android.animad",
+    "org.smarttube.stable",
+    "com.mxtech.videoplayer.ad"
+  ],
+  "columns": 4,
+  "show_inputs_pill": false,
+  "live_tv_package": "",
+  "stock_home_redirect": "com.google.android.apps.tv.launcherx",
+  "app_keys": ["190:org.smarttube.stable"]
 }
