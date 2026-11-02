@@ -17,6 +17,7 @@ import java.util.Map;
  * Opt-in: INPUT_KEY_SERVICE=1 build-and-install.sh (or -InputKeyService on Windows) enables it.
  */
 public class InputKeyService extends AccessibilityService {
+    private static InputKeyService running;
 
     private static final String ACTION_VIEW_INPUTS = "com.android.tv.action.VIEW_INPUTS";
 
@@ -35,6 +36,7 @@ public class InputKeyService extends AccessibilityService {
     @Override
     protected void onServiceConnected() {
         super.onServiceConnected();
+        running = this;
         // From config.xml or a theme's config.json; theme.sh rebinds this service after a push.
         Config config = Config.load(this);
         // restore_key_services: note that this helper runs, so Home can put it back after a force stop.
@@ -58,6 +60,15 @@ public class InputKeyService extends AccessibilityService {
         if (keyCode == KeyEvent.KEYCODE_TV || keyCode == KeyEvent.KEYCODE_TV_INPUT) return true;
         for (int code : inputKeycodes) if (keyCode == code) return true;
         return false;
+    }
+
+    static void reloadAppKeys() {
+        InputKeyService service = running;
+        if (service == null) return;
+        Config config = Config.load(service);
+        RemoteKeys.release(service);
+        service.appKeys = RemoteKeys.parseAppKeys(config.appKeys);
+        service.holdAppKeys = RemoteKeys.parseHoldAppKeys(config.appKeys);
     }
 
     @Override
@@ -88,6 +99,7 @@ public class InputKeyService extends AccessibilityService {
 
     @Override
     public void onDestroy() {
+        if (running == this) running = null;
         RemoteKeys.release(this);
         if (gamepads != null) gamepads.stop();
         if (consumeVolumeKeys) VolumeKeys.stop();

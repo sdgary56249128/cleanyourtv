@@ -51,3 +51,9 @@ Use case: stylized-concept. Asset type: full-screen television launcher wallpape
 ### [10-eclipse-desert](wallpapers/10-eclipse-desert.jpg)
 
 Use case: stylized-concept. Asset type: full-screen television launcher wallpaper. Primary request: A dark alien desert of smooth wind-sculpted dunes, a distant total planetary eclipse with a restrained gold corona above the right horizon, subtle purple star clouds, serene cinematic science-fiction landscape. Style: premium realistic cinematic science-fiction matte painting, atmospheric, richly detailed but quiet. Match a cohesive dark navy, teal and violet space landscape collection. Composition: full-bleed 16:9 horizontal, ideally 1920x1080 or higher; upper-left 35 percent dark low-detail negative space for a clock, bottom 38 percent dark and uncluttered for app tiles; main celestial detail in upper-right and middle distance. Smooth gradients, restrained highlights, no bright white sky. No people, no text, no lettering, no logos, no watermark, no UI, no frame. One wallpaper image only.
+
+## Home and remote settings
+
+The dock uses 70% opacity, with 15% wallpaper dimming. After two idle minutes on Home, a drifting clock appears over the space wallpaper, dimmed by 40%. The system Clock screensaver uses the same wallpaper settings. App grids and order are unchanged.
+
+Open the Home gear → Remote buttons to choose an installed TV app for each short or long press. YouTube defaults to SmartTube on a tap and 動畫瘋 on a hold; Netflix defaults to Netflix on a tap and MX Player on a hold. Theme default restores these mappings. Choices persist across theme changes and apply to running key helpers immediately. Volume and voice buttons are unchanged. Physical remote presses still need verification on each firmware.

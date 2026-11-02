@@ -14,7 +14,21 @@
   "live_tv_package": "",
   "stock_home_redirect": "com.google.android.apps.tv.launcherx",
   "app_keys": [
-    "190:org.smarttube.stable"
+    "190:org.smarttube.stable",
+    "hold:190:tw.com.gamer.android.animad",
+    "191:com.netflix.ninja",
+    "hold:191:com.mxtech.videoplayer.ad"
   ],
-  "wallpaper_true_color": true
+  "remote_key_names": [
+    "190:YouTube",
+    "191:Netflix"
+  ],
+  "launcher_settings_button": true,
+  "wallpaper_true_color": true,
+  "wallpaper_dim": 15,
+  "dock_opacity": 70,
+  "home_idle_clock_minutes": 2,
+  "clock_wallpaper": true,
+  "clock_wallpaper_dim": 40,
+  "clock_glow": false
 }

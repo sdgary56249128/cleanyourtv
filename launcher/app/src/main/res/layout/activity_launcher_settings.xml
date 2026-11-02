@@ -118,6 +118,13 @@
             android:layout_marginTop="28dp" />
 
         <TextView
+            android:id="@+id/remoteKeysChoice"
+            style="@style/SettingsRow"
+            android:layout_marginTop="10dp"
+            android:text="@string/remote_buttons"
+            android:visibility="gone" />
+
+        <TextView
             android:id="@+id/advancedChoice"
             style="@style/SettingsRow"
             android:layout_marginTop="10dp" />

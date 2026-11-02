@@ -238,6 +238,16 @@ public class HomeKeyService extends AccessibilityService {
         }
     }
 
+    /** Called by the app-button picker; no service restart or global settings write is needed. */
+    static void reloadAppKeys() {
+        HomeKeyService service = running;
+        if (service == null) return;
+        Config config = Config.load(service);
+        RemoteKeys.release(service);
+        service.appKeys = RemoteKeys.parseAppKeys(config.appKeys);
+        service.holdAppKeys = RemoteKeys.parseHoldAppKeys(config.appKeys);
+    }
+
     /** A tap's target: the "front:" entry while the button's own app is already in front, else the usual one. */
     private String inFront(Map<Integer, String> keys, Map<Integer, String> front, int code) {
         String target = keys.get(code);

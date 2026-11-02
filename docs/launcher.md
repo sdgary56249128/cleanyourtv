@@ -61,10 +61,13 @@ The launcher's own page has these rows, top to bottom:
   Follow theme, or push the theme again.
 - **Animations** on or off, and **Advanced effects** (tile lift, icon zoom and smooth ambient-colour
   transitions; they may use more memory) once animations are on.
+- **Remote buttons**, only with `remote_key_names`: choose a TV app separately for each named button’s
+  short and long press. Changes apply immediately to the running key helper and persist across theme
+  changes. Choose Theme default to restore that button’s `app_keys` mapping.
 - **Open on start**, only with `open_on_start_choice`: Off, or an app that opens instead of Home the first
   time Home comes up after the TV starts. Once per boot, so Home and Back still reach the launcher.
-- **Follow theme (reset on-TV choices)**, which clears every choice above. Pushing or resetting a theme
-  clears them too.
+- **Follow theme (reset on-TV choices)** clears the layout, wallpaper, clock and animation choices above,
+  as does pushing or resetting a theme. Remote button choices are kept.
 - **Choose default home** opens Android's home picker, and **TV system settings** the TV's own settings
   page.
 

@@ -49,7 +49,22 @@ final class RemoteKeys {
     private static final Pattern NUMERIC_KEY = Pattern.compile("[0-9]{1,6}");
     private static final Pattern KEYCODE_KEY = Pattern.compile("KEYCODE_[A-Z0-9_]+");
 
+    static final String CHOICES_PREFIX = "remote_key_choice_";
+
     private RemoteKeys() { }
+
+    static List<String> applyChoices(List<String> theme, Map<String, ?> choices) {
+        List<String> result = new ArrayList<>(theme);
+        for (Map.Entry<String, ?> entry : choices.entrySet()) {
+            if (!entry.getKey().startsWith(CHOICES_PREFIX) || !(entry.getValue() instanceof String)) continue;
+            String key = entry.getKey().substring(CHOICES_PREFIX.length());
+            String target = ((String) entry.getValue()).trim();
+            if (key.matches("(hold:)?[1-9][0-9]{0,5}") && !target.isEmpty()) {
+                result.add(key + ":" + target);
+            }
+        }
+        return result;
+    }
 
     /** keycode -> package, with key names resolved by Android. */
     static Map<Integer, String> parseAppKeys(String[] entries) {

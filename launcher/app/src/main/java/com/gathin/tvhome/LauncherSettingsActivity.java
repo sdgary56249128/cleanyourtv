@@ -18,6 +18,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /** Remote-friendly settings owned by the launcher; system settings stay one row away. */
 public final class LauncherSettingsActivity extends Activity {
@@ -125,6 +126,9 @@ public final class LauncherSettingsActivity extends Activity {
         }
         wallpaperChoice = findViewById(R.id.wallpaperChoice);
         wallpaperChoice.setOnClickListener(v -> showWallpaperPicker());
+        View remoteChoice = findViewById(R.id.remoteKeysChoice);
+        remoteChoice.setVisibility(config.remoteKeyNames.isEmpty() ? View.GONE : View.VISIBLE);
+        remoteChoice.setOnClickListener(v -> showRemoteKeys());
         animationsChoice = findViewById(R.id.animationsChoice);
         animationsChoice.setOnClickListener(v -> {
             animations = !animations;
@@ -219,8 +223,12 @@ public final class LauncherSettingsActivity extends Activity {
                 .show();
     }
 
-    /** Off, then every app with a TV entry point by name. Saved at once; it is read on the next boot. */
+    /** App picker shared by boot behavior and remote buttons. */
     private void showOpenOnStartPicker() {
+        showAppPicker(getString(R.string.open_on_start_label), OpenOnStart.KEY, false);
+    }
+
+    private List<String[]> tvApps() {
         PackageManager pm = getPackageManager();
         List<String[]> apps = new ArrayList<>();
         Intent tv = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LEANBACK_LAUNCHER);
@@ -232,32 +240,59 @@ public final class LauncherSettingsActivity extends Activity {
             if (!seen) apps.add(new String[]{r.loadLabel(pm).toString(), pkg});
         }
         Collections.sort(apps, (a, b) -> a[0].compareToIgnoreCase(b[0]));
+        return apps;
+    }
+
+    private void showRemoteKeys() {
+        Map<Integer, String> names = RemoteKeys.parseAppKeys(Config.load(this).remoteKeyNames);
+        List<Integer> codes = new ArrayList<>(names.keySet());
+        Collections.sort(codes);
+        String[] presses = getString(R.string.remote_press_names).split("\\|");
+        String[] labels = new String[codes.size() * 2];
+        for (int i = 0; i < labels.length; i++) {
+            labels[i] = names.get(codes.get(i / 2)) + " · " + presses[i % 2];
+        }
+        new AlertDialog.Builder(this).setTitle(R.string.remote_buttons)
+                .setItems(labels, (dialog, which) -> showAppPicker(labels[which],
+                        RemoteKeys.CHOICES_PREFIX + (which % 2 == 0 ? "" : "hold:") + codes.get(which / 2), true))
+                .setNegativeButton(android.R.string.cancel, null).show();
+    }
+
+    private void showAppPicker(String title, String key, boolean remote) {
+        List<String[]> apps = tvApps();
         String[] labels = new String[apps.size() + 1];
-        labels[0] = getString(R.string.off);
-        String current = choices.getString(OpenOnStart.KEY, "");
-        int checked = 0;
+        labels[0] = getString(remote ? R.string.wallpaper_theme_default : R.string.off);
+        String current = choices.getString(key, null);
+        int checked = current == null ? 0 : -1;
         for (int i = 0; i < apps.size(); i++) {
             labels[i + 1] = apps.get(i)[0];
             if (apps.get(i)[1].equals(current)) checked = i + 1;
         }
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.open_on_start_label)
+        new AlertDialog.Builder(this).setTitle(title)
                 .setSingleChoiceItems(labels, checked, (dialog, which) -> {
                     dialog.dismiss();
-                    if (which == 0) choices.edit().remove(OpenOnStart.KEY).apply();
+                    if (which == 0) choices.edit().remove(key).apply();
                     else {
-                        OpenOnStart.skipThisBoot(this);
-                        choices.edit().putString(OpenOnStart.KEY, apps.get(which - 1)[1]).apply();
+                        if (!remote) OpenOnStart.skipThisBoot(this);
+                        choices.edit().putString(key, apps.get(which - 1)[1]).apply();
+                    }
+                    if (remote) {
+                        changed();
+                        HomeKeyService.reloadAppKeys();
+                        InputKeyService.reloadAppKeys();
                     }
                     refresh();
                 })
-                .setNegativeButton(android.R.string.cancel, null)
-                .show();
+                .setNegativeButton(android.R.string.cancel, null).show();
     }
 
     /** The picked app's name, its package when it is gone, or Off. */
     private String openOnStartLabel() {
         String pkg = choices.getString(OpenOnStart.KEY, "");
+        return appLabel(pkg);
+    }
+
+    private String appLabel(String pkg) {
         if (pkg.isEmpty()) return getString(R.string.off);
         try {
             PackageManager pm = getPackageManager();
