@@ -57,3 +57,7 @@ Use case: stylized-concept. Asset type: full-screen television launcher wallpape
 The dock uses 70% opacity, with 15% wallpaper dimming. After two idle minutes on Home, a drifting clock appears over the space wallpaper, dimmed by 40%. The system Clock screensaver uses the same wallpaper settings. App grids and order are unchanged.
 
 Open the Home gear → Remote buttons to choose an installed TV app for each short or long press. YouTube defaults to SmartTube on a tap and 動畫瘋 on a hold; Netflix defaults to Netflix on a tap and MX Player on a hold. Theme default restores these mappings. Choices persist across theme changes and apply to running key helpers immediately. Volume and voice buttons are unchanged. Physical remote presses still need verification on each firmware.
+
+## Version 3.4 upgrade
+
+This fork merges upstream v3.4.0 while keeping the space theme and remote app pickers. Chinese button labels are translated; other locales use the default English labels through Android resource fallback, avoiding duplicate English resource entries. `manage.py set` protects the tracked personal preset, and the config-folder test counts tracked files rather than local work or backups.

@@ -155,6 +155,4 @@
     <string name="clock_format_system">Системные</string>
     <string name="clock_format_12">12-часовой</string>
     <string name="clock_format_24">24-часовой</string>
-    <string name="remote_buttons">Remote buttons</string>
-    <string name="remote_press_names">Short press|Long press</string>
 </resources>

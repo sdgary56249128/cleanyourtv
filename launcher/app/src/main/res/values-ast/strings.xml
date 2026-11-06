@@ -119,6 +119,4 @@
     <string name="race_race_short">CARRERA</string>
     <string name="last_opened">Abierta per última vegada %1$s</string>
     <string name="game_live">En direutu</string>
-    <string name="remote_buttons">Remote buttons</string>
-    <string name="remote_press_names">Short press|Long press</string>
 </resources>

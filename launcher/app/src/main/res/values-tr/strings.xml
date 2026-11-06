@@ -97,6 +97,4 @@
     <string name="clock_format_system">Sistem</string>
     <string name="clock_format_12">12 saat</string>
     <string name="clock_format_24">24 saat</string>
-    <string name="remote_buttons">Remote buttons</string>
-    <string name="remote_press_names">Short press|Long press</string>
 </resources>

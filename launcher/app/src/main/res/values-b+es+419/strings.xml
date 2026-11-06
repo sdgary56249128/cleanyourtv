@@ -145,6 +145,4 @@
     <string name="race_countdown_hours">%1$dh %2$dm</string>
     <string name="race_countdown_days">%1$dd %2$dh</string>
     <string name="last_opened">Última apertura: %1$s</string>
-    <string name="remote_buttons">Remote buttons</string>
-    <string name="remote_press_names">Short press|Long press</string>
 </resources>

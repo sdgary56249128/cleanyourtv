@@ -102,6 +102,4 @@
     <string name="clock_format_system">সিস্টেম</string>
     <string name="clock_format_12">১২ ঘণ্টা</string>
     <string name="clock_format_24">২৪ ঘণ্টা</string>
-    <string name="remote_buttons">Remote buttons</string>
-    <string name="remote_press_names">Short press|Long press</string>
 </resources>

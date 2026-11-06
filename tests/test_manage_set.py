@@ -8,6 +8,7 @@ themes/README.md, so set reads the argument the way that table says and refuses 
 """
 import json
 import re
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -362,10 +363,15 @@ class SetThemeFolderTest(unittest.TestCase):
         # A third kind of folder with a config.json in it (a new add-on contract, say) has to be added to
         # PROJECT_FOLDERS, or set would rewrite it the way examples/ used to be rewritable.
         shipped = {}
-        for path in sorted(ROOT.glob("*/*/config.json")):
-            shipped.setdefault(path.relative_to(ROOT).parts[0], set()).add(path)
+        # Only versioned configs ship with a checkout. Local backups and work files do not.
+        tracked = subprocess.check_output(
+            ["git", "ls-files", "--", "*/*/config.json"], cwd=ROOT, text=True)
+        for name in tracked.splitlines():
+            path = Path(name)
+            if len(path.parts) == 3:
+                shipped.setdefault(path.parts[0], set()).add(path)
         self.assertGreaterEqual(sum(len(v) for v in shipped.values()), 60, "no config.json files were found")
-        self.assertEqual({"examples", "themes"}, set(shipped), "a folder with a config.json that set does not guard")
+        self.assertEqual({"examples", "themes", "personal"}, set(shipped), "a folder with a config.json that set does not guard")
         self.assertEqual(set(shipped), set(manage.PROJECT_FOLDERS))
 
 
