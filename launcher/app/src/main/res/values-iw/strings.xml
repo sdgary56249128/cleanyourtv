@@ -152,4 +152,12 @@
     <string name="clock_format_system">מערכת</string>
     <string name="clock_format_12">12 שעות</string>
     <string name="clock_format_24">24 שעות</string>
+    <string name="remote_buttons">Remote buttons</string>
+    <string name="remote_press_names">Short press|Long press</string>
+    <string name="idle_clock_choice">Idle clock timeout</string>
+    <string name="rotation_choice">Wallpaper rotation interval</string>
+    <string name="rotation_order">Wallpaper rotation order</string>
+    <string name="brightness_choice">Wallpaper brightness</string>
+    <string name="rotation_sequential">Sequential</string>
+    <string name="rotation_shuffle">Shuffle</string>
 </resources>

@@ -59,6 +59,16 @@ The launcher's own page has these rows, top to bottom:
 - **Wallpaper**: one picture from the theme's collection (or its `wallpaper.jpg`), **None**, or **Theme
   default**. A pick holds that picture and stops the rotation until you choose Theme default, press
   Follow theme, or push the theme again.
+- With `launcher_settings_button`, four more rows let you choose **Idle clock timeout** (Off, 2, 5, 10 or
+  30 minutes), **Wallpaper rotation interval** (5, 15, 30, 60 or 120 minutes), **Wallpaper rotation order**
+  (Sequential or Shuffle), and **Wallpaper brightness** (100%, 85%, 70%, 50%, 30% or 10%). Each has
+  Theme default. Choices apply when you return to Home and survive app upgrades. Choosing an interval
+  resumes the collection after picking a fixed picture or None. Brightness adjusts Home's wallpaper;
+  the clock screensaver keeps its theme's separate dimming. Follow theme, or a theme push/reset, clears
+  these choices too. The idle timer runs only on Home, so it never interrupts an app.
+
+  ![On-TV idle-clock and wallpaper settings](scene-settings.jpg)
+
 - **Animations** on or off, and **Advanced effects** (tile lift, icon zoom and smooth ambient-colour
   transitions; they may use more memory) once animations are on.
 - **Remote buttons**, only with `remote_key_names`: choose a TV app separately for each named button’s

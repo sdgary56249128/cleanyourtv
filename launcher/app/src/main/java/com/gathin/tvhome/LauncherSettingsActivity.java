@@ -124,6 +124,15 @@ public final class LauncherSettingsActivity extends Activity {
             reverseRow(dockChoices);
             reverseRow(clockChoices);
         }
+        View sceneChoices = findViewById(R.id.sceneChoices);
+        sceneChoices.setVisibility(config.launcherSettingsButton ? View.VISIBLE : View.GONE);
+        findViewById(R.id.idleClockChoice).setOnClickListener(v ->
+                showScenePicker(R.string.idle_clock_choice, "home_idle_clock_minutes", new int[]{0, 2, 5, 10, 30}));
+        findViewById(R.id.rotationChoice).setOnClickListener(v ->
+                showScenePicker(R.string.rotation_choice, "wallpaper_rotation_minutes", new int[]{5, 15, 30, 60, 120}));
+        findViewById(R.id.dimChoice).setOnClickListener(v ->
+                showScenePicker(R.string.brightness_choice, "wallpaper_dim", new int[]{0, 15, 30, 50, 70, 90}));
+        findViewById(R.id.orderChoice).setOnClickListener(v -> showOrderPicker());
         wallpaperChoice = findViewById(R.id.wallpaperChoice);
         wallpaperChoice.setOnClickListener(v -> showWallpaperPicker());
         View remoteChoice = findViewById(R.id.remoteKeysChoice);
@@ -161,7 +170,9 @@ public final class LauncherSettingsActivity extends Activity {
             if (!hasOnTvChoices()) return;
             choices.edit().remove("columns").remove(Config.ROWS_BELOW_DOCK_KEY).remove("animations")
                     .remove("advanced_effects").remove(Config.WALLPAPER_CHOICE_KEY)
-                    .remove(Config.DOCK_OPACITY_KEY).remove(Config.CLOCK_FORMAT_KEY).remove(OpenOnStart.KEY).commit();
+                    .remove(Config.DOCK_OPACITY_KEY).remove(Config.CLOCK_FORMAT_KEY).remove(OpenOnStart.KEY)
+                    .remove("home_idle_clock_minutes").remove("wallpaper_rotation_minutes")
+                    .remove("wallpaper_dim").remove("wallpaper_order").commit();
             Config current = Config.load(this);
             columns = current.columns;
             rowsBelowDock = current.rowsBelowDock;
@@ -185,6 +196,48 @@ public final class LauncherSettingsActivity extends Activity {
         LinearLayout row = (LinearLayout) views[0].getParent();
         row.removeAllViews();
         for (int i = views.length - 1; i >= 0; i--) row.addView(views[i]);
+    }
+
+    /** The same preset picker handles both minute counts and wallpaper dimming. */
+    private void showScenePicker(int title, String key, int[] values) {
+        boolean dim = "wallpaper_dim".equals(key);
+        String[] labels = new String[values.length + 1];
+        labels[0] = getString(R.string.wallpaper_theme_default);
+        int selected = choices.getInt(key, -1);
+        int checked = selected == -1 ? 0 : -1;
+        for (int i = 0; i < values.length; i++) {
+            labels[i + 1] = dim ? (100 - values[i]) + "%"
+                    : values[i] == 0 ? getString(R.string.off)
+                    : getString(R.string.race_countdown_minutes, values[i]);
+            if (selected == values[i]) checked = i + 1;
+        }
+        new AlertDialog.Builder(this).setTitle(title)
+                .setSingleChoiceItems(labels, checked, (dialog, which) -> {
+                    SharedPreferences.Editor edit = choices.edit();
+                    if (which == 0) edit.remove(key);
+                    else edit.putInt(key, values[which - 1]);
+                    // Choosing a rotation interval resumes the collection after a fixed picture or None.
+                    if ("wallpaper_rotation_minutes".equals(key)) edit.remove(Config.WALLPAPER_CHOICE_KEY);
+                    edit.apply();
+                    changed();
+                    refresh();
+                    dialog.dismiss();
+                }).setNegativeButton(android.R.string.cancel, null).show();
+    }
+
+    private void showOrderPicker() {
+        String[] labels = {getString(R.string.wallpaper_theme_default),
+                getString(R.string.rotation_sequential), getString(R.string.rotation_shuffle)};
+        String[] values = {null, WallpaperRotation.ORDER_SEQUENTIAL, WallpaperRotation.ORDER_SHUFFLE};
+        String selected = choices.getString("wallpaper_order", null);
+        int checked = selected == null ? 0 : WallpaperRotation.ORDER_SEQUENTIAL.equals(selected) ? 1 : 2;
+        new AlertDialog.Builder(this).setTitle(R.string.rotation_order)
+                .setSingleChoiceItems(labels, checked, (dialog, which) -> {
+                    choices.edit().putString("wallpaper_order", values[which]).apply();
+                    changed();
+                    refresh();
+                    dialog.dismiss();
+                }).setNegativeButton(android.R.string.cancel, null).show();
     }
 
     private void showWallpaperPicker() {
@@ -359,7 +412,9 @@ public final class LauncherSettingsActivity extends Activity {
         return choices.contains("columns") || choices.contains(Config.ROWS_BELOW_DOCK_KEY)
                 || choices.contains("animations") || choices.contains("advanced_effects")
                 || choices.contains(Config.WALLPAPER_CHOICE_KEY) || choices.contains(Config.DOCK_OPACITY_KEY)
-                || choices.contains(Config.CLOCK_FORMAT_KEY) || choices.contains(OpenOnStart.KEY);
+                || choices.contains(Config.CLOCK_FORMAT_KEY) || choices.contains(OpenOnStart.KEY)
+                || choices.contains("home_idle_clock_minutes") || choices.contains("wallpaper_rotation_minutes")
+                || choices.contains("wallpaper_dim") || choices.contains("wallpaper_order");
     }
 
     private void open(Intent intent) {

@@ -99,4 +99,10 @@
     <string name="clock_format_24">24 小時制</string>
     <string name="remote_buttons">遙控器按鍵</string>
     <string name="remote_press_names">短按|長按</string>
+    <string name="idle_clock_choice">待機時鐘時間</string>
+    <string name="rotation_choice">桌布輪播間隔</string>
+    <string name="rotation_order">桌布輪播順序</string>
+    <string name="brightness_choice">桌布背景亮度</string>
+    <string name="rotation_sequential">依序輪播</string>
+    <string name="rotation_shuffle">隨機輪播</string>
 </resources>

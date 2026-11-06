@@ -666,6 +666,7 @@ final class Config {
         // Unmounted storage looks like a theme reset; compare only once the file is readable.
         if (mounted) syncThemeChoices(choices, dir, file);
         if (!remoteKeyNames.isEmpty()) appKeys = RemoteKeys.applyChoices(appKeys, choices.getAll());
+        idleClockMinutes = chosenRange(choices.getInt("home_idle_clock_minutes", -1), idleClockMinutes, 0, 1440);
         int chosenColumns = choices.getInt("columns", columns);
         if (chosenColumns >= 4 && chosenColumns <= 7) columns = chosenColumns;
         int chosenRows = choices.getInt(ROWS_BELOW_DOCK_KEY, rowsBelow);
@@ -679,11 +680,14 @@ final class Config {
         if (!wallpaperEnabled) wallpaper = null;
         int rotationMinutes = json == null ? 0 : integer(json, "wallpaper_rotation_minutes", 0, 0, 1440);
         int wallpaperDim = json == null ? 0 : integer(json, "wallpaper_dim", 0, 0, 90);
+        rotationMinutes = chosenRange(choices.getInt("wallpaper_rotation_minutes", -1), rotationMinutes, 1, 1440);
+        wallpaperDim = chosenRange(choices.getInt("wallpaper_dim", -1), wallpaperDim, 0, 90);
         int dockOpacity = json == null ? 100 : integer(json, "dock_opacity", 100, 30, 100);
         dockOpacity = chosenDockOpacity(choices.getInt(DOCK_OPACITY_KEY, -1), dockOpacity);
         clockFormat = choices.getString(CLOCK_FORMAT_KEY, clockFormat);
         String wallpaperOrder = json == null ? WallpaperRotation.ORDER_SHUFFLE
                 : string(json, "wallpaper_order", WallpaperRotation.ORDER_SHUFFLE);
+        wallpaperOrder = choices.getString("wallpaper_order", wallpaperOrder);
         // An unknown order must not silently change how an existing collection rotates.
         if (!WallpaperRotation.validOrder(wallpaperOrder)) wallpaperOrder = WallpaperRotation.ORDER_SHUFFLE;
         List<File> wallpapers = new ArrayList<>();
@@ -765,13 +769,21 @@ final class Config {
             SharedPreferences.Editor editor = choices.edit();
             if (!"absent".equals(token)) editor.remove("columns").remove("animations")
                     .remove("advanced_effects").remove(ROWS_BELOW_DOCK_KEY).remove(WALLPAPER_CHOICE_KEY)
-                    .remove(DOCK_OPACITY_KEY).remove(CLOCK_FORMAT_KEY);
+                    .remove(DOCK_OPACITY_KEY).remove(CLOCK_FORMAT_KEY)
+                    .remove("home_idle_clock_minutes").remove("wallpaper_rotation_minutes")
+                    .remove("wallpaper_order").remove("wallpaper_dim");
             editor.putString(THEME_SIGNATURE_KEY, signature).commit();
         } else if (!seen.equals(signature)) {
             choices.edit().remove("columns").remove("animations").remove("advanced_effects")
                     .remove(ROWS_BELOW_DOCK_KEY).remove(WALLPAPER_CHOICE_KEY).remove(DOCK_OPACITY_KEY)
-                    .remove(CLOCK_FORMAT_KEY).putString(THEME_SIGNATURE_KEY, signature).commit();
+                    .remove(CLOCK_FORMAT_KEY).remove("home_idle_clock_minutes").remove("wallpaper_rotation_minutes")
+                    .remove("wallpaper_order").remove("wallpaper_dim")
+                    .putString(THEME_SIGNATURE_KEY, signature).commit();
         }
+    }
+
+    static int chosenRange(int chosen, int theme, int min, int max) {
+        return chosen >= min && chosen <= max ? chosen : theme;
     }
 
     /** The dock band opacity chosen in Launcher settings, or the theme's when none (or an out-of-range one) is saved. */

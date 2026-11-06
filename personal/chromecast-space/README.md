@@ -61,3 +61,7 @@ Open the Home gear → Remote buttons to choose an installed TV app for each sho
 ## Version 3.4 upgrade
 
 This fork merges upstream v3.4.0 while keeping the space theme and remote app pickers. Chinese button labels are translated; other locales use the default English labels through Android resource fallback, avoiding duplicate English resource entries. `manage.py set` protects the tracked personal preset, and the config-folder test counts tracked files rather than local work or backups.
+
+## On-TV scene controls
+
+Home gear → Launcher settings offers idle-clock timeout, wallpaper rotation interval and order, and Home wallpaper brightness. Each picker can follow the theme again. A new interval resumes the wallpaper collection after a fixed-picture choice. Settings apply on returning Home, persist across app upgrades, and reset with Follow theme or a theme push.

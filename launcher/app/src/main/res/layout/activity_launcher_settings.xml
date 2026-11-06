@@ -112,6 +112,34 @@
             style="@style/SettingsRow"
             android:layout_marginTop="28dp" />
 
+        <LinearLayout
+            android:id="@+id/sceneChoices"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <TextView
+                android:id="@+id/idleClockChoice"
+                style="@style/SettingsRow"
+                android:layout_marginTop="10dp"
+                android:text="@string/idle_clock_choice" />
+            <TextView
+                android:id="@+id/rotationChoice"
+                style="@style/SettingsRow"
+                android:layout_marginTop="10dp"
+                android:text="@string/rotation_choice" />
+            <TextView
+                android:id="@+id/orderChoice"
+                style="@style/SettingsRow"
+                android:layout_marginTop="10dp"
+                android:text="@string/rotation_order" />
+            <TextView
+                android:id="@+id/dimChoice"
+                style="@style/SettingsRow"
+                android:layout_marginTop="10dp"
+                android:text="@string/brightness_choice" />
+        </LinearLayout>
+
         <TextView
             android:id="@+id/animationsChoice"
             style="@style/SettingsRow"
