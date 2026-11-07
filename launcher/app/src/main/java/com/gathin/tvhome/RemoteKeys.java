@@ -53,13 +53,17 @@ final class RemoteKeys {
 
     private RemoteKeys() { }
 
+    static boolean validChoiceKey(String key) {
+        return key.matches("(hold:)?(scan:)?[1-9][0-9]{0,5}");
+    }
+
     static List<String> applyChoices(List<String> theme, Map<String, ?> choices) {
         List<String> result = new ArrayList<>(theme);
         for (Map.Entry<String, ?> entry : choices.entrySet()) {
             if (!entry.getKey().startsWith(CHOICES_PREFIX) || !(entry.getValue() instanceof String)) continue;
             String key = entry.getKey().substring(CHOICES_PREFIX.length());
             String target = ((String) entry.getValue()).trim();
-            if (key.matches("(hold:)?[1-9][0-9]{0,5}") && !target.isEmpty()) {
+            if (validChoiceKey(key) && !target.isEmpty()) {
                 result.add(key + ":" + target);
             }
         }

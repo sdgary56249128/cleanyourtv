@@ -33,4 +33,18 @@ public class RemoteKeyChoicesTest {
         saved.put(RemoteKeys.CHOICES_PREFIX + "hold:191", "  ");
         assertEquals(theme, RemoteKeys.applyChoices(theme, saved));
     }
+
+    @Test public void sonyScancodesCanBeChangedWithoutOverwritingSharedKeycodes() {
+        List<String> theme = Arrays.asList("196:base.app", "scan:485:youtube.app", "scan:492:video.app");
+        Map<String, Object> saved = new HashMap<>();
+        saved.put(RemoteKeys.CHOICES_PREFIX + "scan:485", "smart.app");
+        saved.put(RemoteKeys.CHOICES_PREFIX + "hold:scan:492", "anime.app");
+        List<String> merged = RemoteKeys.applyChoices(theme, saved);
+        assertEquals("smart.app", RemoteKeys.parseAppScancodes(merged).get(485));
+        assertEquals("video.app", RemoteKeys.parseAppScancodes(merged).get(492));
+        assertEquals("anime.app", RemoteKeys.parseHoldAppScancodes(merged).get(492));
+        assertEquals("base.app", RemoteKeys.parseAppKeys(merged, key -> 0).get(196));
+        assertFalse(RemoteKeys.validChoiceKey("scan:0"));
+        assertFalse(RemoteKeys.validChoiceKey("hold:scan:9999999"));
+    }
 }

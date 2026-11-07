@@ -1,0 +1,66 @@
+plugins { id 'com.android.application' }
+
+// Reuse the reference launcher's sources and resources. Video code lives only in this personal build.
+def launcher = rootProject.file('../../launcher/app/src/main')
+def generatedManifest = layout.buildDirectory.file('generated/personal/AndroidManifest.xml')
+def referenceJava = layout.buildDirectory.dir('generated/reference/java')
+tasks.register('personalSources', Sync) {
+    from new File(launcher, 'java')
+    into referenceJava
+    doLast {
+        // Keep the public HomeKeyService component name while wrapping only the personal build's key events.
+        def original = new File(referenceJava.get().asFile, 'com/gathin/tvhome/HomeKeyService.java')
+        def renamed = new File(original.parentFile, 'ReferenceHomeKeyService.java')
+        renamed.text = original.text.replaceAll('\\bHomeKeyService\\b', 'ReferenceHomeKeyService')
+        original.delete()
+    }
+}
+tasks.register('personalManifest') {
+    inputs.file(new File(launcher, 'AndroidManifest.xml'))
+    outputs.file(generatedManifest)
+    doLast {
+        def parser = new groovy.util.XmlParser(false, false)
+        def manifest = parser.parse(new File(launcher, 'AndroidManifest.xml'))
+        def application = manifest.application[0]
+        [['.MainActivity', '.VideoHomeActivity'], ['.LauncherSettingsActivity', '.VideoLauncherSettingsActivity']].each { pair ->
+            def activity = application.activity.find { it.attributes()['android:name'] == pair[0] }
+            if (activity == null) throw new GradleException('Reference activity missing: ' + pair[0])
+            activity.attributes()['android:name'] = pair[1]
+            def alias = application.appendNode('activity-alias', ['android:name': pair[0],
+                'android:targetActivity': pair[1], 'android:exported': activity.attributes()['android:exported']])
+            activity.'intent-filter'.toList().each { filter -> activity.remove(filter); alias.append(filter) }
+        }
+        application.appendNode('activity', ['android:name': '.KeyLearningActivity', 'android:exported': 'false', 'android:screenOrientation': 'landscape'])
+        application.appendNode('activity', ['android:name': '.VideoSettingsActivity', 'android:exported': 'false',
+            'android:screenOrientation': 'landscape'])
+        application.appendNode('provider', ['android:name': '.VideoFileProvider', 'android:exported': 'true',
+            'android:authorities': 'com.gathin.tvhome.video', 'android:permission': 'android.permission.WRITE_SECURE_SETTINGS'])
+        def output = generatedManifest.get().asFile
+        output.parentFile.mkdirs()
+        output.text = groovy.xml.XmlUtil.serialize(manifest)
+    }
+}
+android {
+    namespace 'com.gathin.tvhome'
+    compileSdk 34
+    defaultConfig { applicationId 'com.gathin.tvhome'; minSdk 26; targetSdk 34; versionCode 13; versionName '3.4-video' }
+    sourceSets.main {
+        java.srcDir referenceJava
+        res.srcDir new File(launcher, 'res')
+        manifest.srcFile generatedManifest
+    }
+    buildTypes.release {
+        minifyEnabled true
+        shrinkResources true
+        proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), rootProject.file('../../launcher/app/proguard-rules.pro')
+        signingConfig signingConfigs.debug
+    }
+    packagingOptions.resources.excludes += ['kotlin/**', 'META-INF/*.version', 'META-INF/*.kotlin_module', 'DebugProbesKt.bin']
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+}
+tasks.named('preBuild').configure { dependsOn 'personalManifest', 'personalSources' }
+dependencies {
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
+    implementation 'androidx.dynamicanimation:dynamicanimation:1.0.0'
+    testImplementation 'junit:junit:4.13.2'
+}

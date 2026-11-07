@@ -18,10 +18,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /** Remote-friendly settings owned by the launcher; system settings stay one row away. */
-public final class LauncherSettingsActivity extends Activity {
+public class LauncherSettingsActivity extends Activity {
     @Override
     protected void attachBaseContext(android.content.Context base) {
         super.attachBaseContext(LauncherLocale.wrap(base));   // locale
@@ -297,21 +296,30 @@ public final class LauncherSettingsActivity extends Activity {
     }
 
     private void showRemoteKeys() {
-        Map<Integer, String> names = RemoteKeys.parseAppKeys(Config.load(this).remoteKeyNames);
-        List<Integer> codes = new ArrayList<>(names.keySet());
-        Collections.sort(codes);
+        List<String> names = new ArrayList<>();
+        for (String entry : Config.load(this).remoteKeyNames) {
+            int separator = entry.lastIndexOf(':');
+            if (separator <= 0 || entry.startsWith("hold:")) continue;
+            String key = entry.substring(0, separator).trim();
+            if (key.startsWith("KEYCODE_")) key = "" + android.view.KeyEvent.keyCodeFromString(key);
+            if (RemoteKeys.validChoiceKey(key)) names.add(key + entry.substring(separator));
+        }
         String[] presses = getString(R.string.remote_press_names).split("\\|");
-        String[] labels = new String[codes.size() * 2];
+        String[] labels = new String[names.size() * 2];
         for (int i = 0; i < labels.length; i++) {
-            labels[i] = names.get(codes.get(i / 2)) + " · " + presses[i % 2];
+            String entry = names.get(i / 2);
+            labels[i] = entry.substring(entry.lastIndexOf(':') + 1) + " · " + presses[i % 2];
         }
         new AlertDialog.Builder(this).setTitle(R.string.remote_buttons)
-                .setItems(labels, (dialog, which) -> showAppPicker(labels[which],
-                        RemoteKeys.CHOICES_PREFIX + (which % 2 == 0 ? "" : "hold:") + codes.get(which / 2), true))
-                .setNegativeButton(android.R.string.cancel, null).show();
+                .setItems(labels, (dialog, which) -> {
+                    String entry = names.get(which / 2);
+                    String key = entry.substring(0, entry.lastIndexOf(':'));
+                    showAppPicker(labels[which], RemoteKeys.CHOICES_PREFIX
+                            + (which % 2 == 0 ? "" : "hold:") + key, true);
+                }).setNegativeButton(android.R.string.cancel, null).show();
     }
 
-    private void showAppPicker(String title, String key, boolean remote) {
+    protected void showAppPicker(String title, String key, boolean remote) {
         List<String[]> apps = tvApps();
         String[] labels = new String[apps.size() + 1];
         labels[0] = getString(remote ? R.string.wallpaper_theme_default : R.string.off);

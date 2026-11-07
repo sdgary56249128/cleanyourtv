@@ -221,7 +221,7 @@
          to omit. -->
     <string-array name="app_keys" translatable="false">
     </string-array>
-    <!-- Optional "keycode:button name" entries expose short/long-press app pickers in Launcher
+    <!-- Optional "keycode:button name" or "scan:scancode:button name" entries expose short/long-press app pickers in Launcher
          settings. Empty/off by default; a theme can set remote_key_names for this remote. -->
     <string-array name="remote_key_names" translatable="false">
     </string-array>

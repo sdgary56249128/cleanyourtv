@@ -246,6 +246,8 @@ public class HomeKeyService extends AccessibilityService {
         RemoteKeys.release(service);
         service.appKeys = RemoteKeys.parseAppKeys(config.appKeys);
         service.holdAppKeys = RemoteKeys.parseHoldAppKeys(config.appKeys);
+        service.appScancodes = RemoteKeys.parseAppScancodes(config.appKeys);
+        service.holdAppScancodes = RemoteKeys.parseHoldAppScancodes(config.appKeys);
     }
 
     /** A tap's target: the "front:" entry while the button's own app is already in front, else the usual one. */

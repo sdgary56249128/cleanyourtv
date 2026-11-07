@@ -71,7 +71,8 @@ The launcher's own page has these rows, top to bottom:
 
 - **Animations** on or off, and **Advanced effects** (tile lift, icon zoom and smooth ambient-colour
   transitions; they may use more memory) once animations are on.
-- **Remote buttons**, only with `remote_key_names`: choose a TV app separately for each named button’s
+- **Remote buttons**, only with `remote_key_names`: names can use numeric keycodes or `scan:` scancodes
+  (Sony app buttons can share one keycode). Choose a TV app separately for each named button’s
   short and long press. Changes apply immediately to the running key helper and persist across theme
   changes. Choose Theme default to restore that button’s `app_keys` mapping.
 - **Open on start**, only with `open_on_start_choice`: Off, or an app that opens instead of Home the first

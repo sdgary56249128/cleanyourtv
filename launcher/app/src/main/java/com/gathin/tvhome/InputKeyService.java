@@ -69,6 +69,8 @@ public class InputKeyService extends AccessibilityService {
         RemoteKeys.release(service);
         service.appKeys = RemoteKeys.parseAppKeys(config.appKeys);
         service.holdAppKeys = RemoteKeys.parseHoldAppKeys(config.appKeys);
+        service.appScancodes = RemoteKeys.parseAppScancodes(config.appKeys);
+        service.holdAppScancodes = RemoteKeys.parseHoldAppScancodes(config.appKeys);
     }
 
     @Override
