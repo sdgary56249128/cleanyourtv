@@ -7,4 +7,18 @@
         <item>報紙襯線</item>
         <item>古英文報頭</item>
     </string-array>
+    <string name="weekly_wallpapers">每週壁紙組合</string>
+    <string name="system_info_title">系統資訊</string>
+    <string name="refresh_readings">重新讀取</string>
+    <string name="network_offline">離線</string>
+    <string name="state_on">開啟</string>
+    <string name="state_off">關閉</string>
+    <string name="system_info_values">裝置  %1$s\nAndroid  %2$s\n系統版本  %3$s\n首頁版本  %4$s\n\n可用記憶體  %5$s / %6$s\n首頁記憶體（PSS）  %7$s\n可用儲存空間  %8$s / %9$s\n\n網路  %10$s\nVPN  %11$s\n解析度  %12$d × %13$d\n時區  %14$s\n運作時間  %15$s</string>
+    <string name="profile_title">設定備份</string>
+    <string name="profile_saved">已建立首頁本機備份</string>
+    <string name="profile_failed">備份操作失敗\n%1$s</string>
+    <string name="confirm_profile_restore">要還原已儲存的首頁設定嗎？</string>
+    <string name="git_profile_help">由已配對的 Mac 將首頁設定匯出到每台裝置的 Git 設定檔，保存主題、字體、App 排序與快捷鍵。\n\n最近同步提交  %1$s</string>
+    <string-array name="weekly_wallpaper_modes"><item>每週一自動換組</item><item>固定星空 A 組</item><item>固定星空 B 組</item><item>全部壁紙輪播</item></string-array>
+    <string-array name="profile_actions"><item>建立本機備份</item><item>還原本機備份</item><item>Git 備份狀態</item></string-array>
 </resources>

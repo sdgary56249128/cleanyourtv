@@ -1,0 +1,71 @@
+{
+  "launcher": {
+    "version_code": 16,
+    "version_name": "3.5-personal"
+  },
+  "model": "Chromecast",
+  "order": "tvhome-order 1\ndock com.netflix.ninja,tw.com.gamer.android.animad,org.smarttube.stable,com.mxtech.videoplayer.ad\n",
+  "preferences": {
+    "advanced_effects": true,
+    "dock_opacity": 30,
+    "personal_home_font": "blackletter",
+    "weekly_wallpaper_mode": "weekly"
+  },
+  "schema": 1,
+  "theme": {
+    "ambient_glow": false,
+    "app_keys": [
+      "190:org.smarttube.stable",
+      "hold:190:tw.com.gamer.android.animad",
+      "191:com.netflix.ninja",
+      "hold:191:com.mxtech.videoplayer.ad"
+    ],
+    "clock_glow": false,
+    "clock_wallpaper": true,
+    "clock_wallpaper_dim": 40,
+    "columns": 4,
+    "dock_apps": [
+      "com.netflix.ninja",
+      "tw.com.gamer.android.animad",
+      "org.smarttube.stable",
+      "com.mxtech.videoplayer.ad"
+    ],
+    "dock_opacity": 70,
+    "home_idle_clock_minutes": 2,
+    "launcher_settings_button": true,
+    "live_tv_package": "",
+    "remote_key_names": [
+      "190:YouTube",
+      "191:Netflix"
+    ],
+    "show_inputs_pill": false,
+    "stock_home_redirect": "com.google.android.apps.tv.launcherx",
+    "wallpaper": true,
+    "wallpaper_dim": 15,
+    "wallpaper_order": "sequential",
+    "wallpaper_rotation_minutes": 30,
+    "wallpaper_true_color": true
+  },
+  "wallpapers": [
+    "01-ringed-lake.jpg",
+    "02-nebula-dunes.jpg",
+    "03-aurora-peaks.jpg",
+    "04-lunar-crater.jpg",
+    "05-luminous-valley.jpg",
+    "06-twin-moon-ocean.jpg",
+    "07-nebula-canyon.jpg",
+    "08-ringed-ice.jpg",
+    "09-starlit-islands.jpg",
+    "10-eclipse-desert.jpg",
+    "week-b-01-obsidian-sea.jpg",
+    "week-b-02-comet-valley.jpg",
+    "week-b-03-gas-giant-clouds.jpg",
+    "week-b-04-nebula-archipelago.jpg",
+    "week-b-05-emerald-crater.jpg",
+    "week-b-06-rings-over-desert.jpg",
+    "week-b-07-starlit-ice-coast.jpg",
+    "week-b-08-binary-moon-lake.jpg",
+    "week-b-09-blue-dust-mountains.jpg",
+    "week-b-10-celestial-fjord.jpg"
+  ]
+}

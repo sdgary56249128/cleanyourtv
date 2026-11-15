@@ -13,6 +13,56 @@ tasks.register('referenceSources', Sync) {
         def renamed = new File(original.parentFile, 'ReferenceClockDream.java')
         renamed.text = original.text.replaceAll('\\bClockDream\\b', 'ReferenceClockDream')
         original.delete()
+        // Reuse the shared wallpaper players and their existing minute ticks.
+        def patches = [
+            'WallpaperPlayer.java': [
+                ['if (moods.isEmpty()) return files;', 'List<File> weekly = WeeklyWallpapers.select(root.getContext(), files);\n        if (moods.isEmpty()) return weekly;'],
+                ['WallpaperMood.select(files, moods,', 'WallpaperMood.select(weekly, moods,']
+            ],
+            'ClockScene.java': [
+                ['File current = WallpaperRotation.find(rotation, shown);', 'List<File> weekly = playable();\n            File current = WallpaperRotation.find(weekly, shown);'],
+                ['wallpaperFile = current != null ? current : rotation.get(0);', 'wallpaperFile = current != null ? current : weekly.get(0);'],
+                ['if (shownMs < rotationMs) return;', 'if (shownMs < rotationMs && WallpaperRotation.find(playable(), wallpaperFile.getName()) != null) return;'],
+                ['if (moods.isEmpty()) return rotation;', 'List<File> weekly = WeeklyWallpapers.select(content.getContext(), rotation);\n        if (moods.isEmpty()) return weekly;'],
+                ['WallpaperMood.select(rotation, moods,', 'WallpaperMood.select(weekly, moods,']
+            ]
+        ]
+        patches['HomeKeyService.java'] = [[
+            '    static void reloadAppKeys() {',
+            '''    static void reloadProfile() {
+        HomeKeyService service = running;
+        if (service == null) return;
+        RemoteKeys.release(service);
+        VolumeKeys.stop();
+        if (service.gamepads != null) { service.gamepads.stop(); service.gamepads = null; }
+        service.disarmStandbyExit();
+        service.loadConfig();
+    }
+
+    static void reloadAppKeys() {'''
+        ]]
+        patches['InputKeyService.java'] = [[
+            '    static void reloadAppKeys() {',
+            '''    static void reloadProfile() {
+        InputKeyService service = running;
+        if (service == null) return;
+        RemoteKeys.release(service);
+        VolumeKeys.stop();
+        if (service.gamepads != null) { service.gamepads.stop(); service.gamepads = null; }
+        service.onServiceConnected();
+    }
+
+    static void reloadAppKeys() {'''
+        ]]
+        patches.each { name, replacements ->
+            def file = new File(generatedJava.get().asFile, 'com/gathin/tvhome/' + name)
+            def text = file.text
+            replacements.each { pair ->
+                if (text.count(pair[0]) != 1) throw new GradleException('Weekly wallpaper hook changed: ' + name)
+                text = text.replace(pair[0], pair[1])
+            }
+            file.text = text
+        }
     }
 }
 
@@ -31,6 +81,10 @@ tasks.register('personalManifest') {
                 'android:targetActivity': pair[1], 'android:exported': activity.attributes()['android:exported']])
             activity.'intent-filter'.toList().each { filter -> activity.remove(filter); alias.append(filter) }
         }
+        application.appendNode('activity', ['android:name': '.SystemInfoActivity', 'android:exported': 'false',
+            'android:screenOrientation': 'landscape'])
+        application.appendNode('provider', ['android:name': '.ProfileProvider', 'android:exported': 'true',
+            'android:authorities': 'com.gathin.tvhome.profile', 'android:permission': 'android.permission.WRITE_SECURE_SETTINGS'])
         def output = generatedManifest.get().asFile
         output.parentFile.mkdirs()
         output.text = groovy.xml.XmlUtil.serialize(manifest)
@@ -44,8 +98,8 @@ android {
         applicationId 'com.gathin.tvhome'
         minSdk 26
         targetSdk 34
-        versionCode 15
-        versionName '3.5-fonts'
+        versionCode 16
+        versionName '3.5-personal'
     }
     sourceSets {
         main {

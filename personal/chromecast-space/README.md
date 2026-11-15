@@ -69,3 +69,9 @@ Home gear → Launcher settings offers idle-clock timeout, wallpaper rotation in
 ## Font choices
 
 The [Chromecast font build](../chromecast-font-home/README.md) adds an on-TV picker for Outfit, a newspaper serif and an Old English masthead face. It shares this launcher and theme, with the chosen typeface applied to Home and the clock.
+
+## Weekly wallpaper sets
+
+The personal Chromecast build rotates two sets of ten wallpapers every Monday in the television's local time zone. Set A contains the original ten images. Set B uses the ten week-b-*.jpg images generated with the built-in image_gen tool. Each set follows the selected within-set interval. The on-TV weekly picker can also keep set A, keep set B or rotate all twenty. A fixed individual wallpaper takes precedence over the weekly choice.
+
+The final generation prompt set is saved in [weekly-prompts.json](weekly-prompts.json). The generated scenes use dark, low-detail space above the dock and around the clock.

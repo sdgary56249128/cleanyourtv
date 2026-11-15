@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- This personal build provides English and Traditional Chinese, with English fallback elsewhere. -->
     <string name="font_choice" tools:ignore="MissingTranslation">Font · %1$s</string>
     <string name="font_picker_title" tools:ignore="MissingTranslation">Home and screensaver font</string>
@@ -9,4 +9,18 @@
         <item>Newspaper serif</item>
         <item>Old English masthead</item>
     </string-array>
+    <string name="weekly_wallpapers">Weekly wallpaper sets</string>
+    <string name="system_info_title">System information</string>
+    <string name="refresh_readings">Refresh</string>
+    <string name="network_offline">Offline</string>
+    <string name="state_on">On</string>
+    <string name="state_off">Off</string>
+    <string name="system_info_values">Device  %1$s\nAndroid  %2$s\nBuild  %3$s\nLauncher  %4$s\n\nAvailable RAM  %5$s / %6$s\nLauncher memory (PSS)  %7$s\nFree storage  %8$s / %9$s\n\nNetwork  %10$s\nVPN  %11$s\nResolution  %12$d × %13$d\nTime zone  %14$s\nUptime  %15$s</string>
+    <string name="profile_title">Settings backup</string>
+    <string name="profile_saved">Local Home backup saved</string>
+    <string name="profile_failed">Backup operation failed\n%1$s</string>
+    <string name="confirm_profile_restore">Restore the saved Home settings?</string>
+    <string name="git_profile_help">A paired Mac can export Home settings into a per-device Git profile. It contains theme, font, app order and shortcut choices.\n\nLatest synced commit  %1$s</string>
+    <string-array name="weekly_wallpaper_modes"><item>Switch sets every Monday</item><item>Space set A</item><item>Space set B</item><item>All wallpapers</item></string-array>
+    <string-array name="profile_actions"><item>Create local backup</item><item>Restore local backup</item><item>Git backup status</item></string-array>
 </resources>

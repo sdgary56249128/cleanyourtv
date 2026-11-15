@@ -16,6 +16,7 @@ public final class FontHomeActivity extends MainActivity {
             };
 
     @Override protected void onCreate(Bundle state) {
+        HomeProfile.recover(this);
         super.onCreate(state);
         font = FontChoice.face(this, FontChoice.selected(this));
         FontChoice.apply(getWindow().getDecorView(), font);

@@ -1,0 +1,42 @@
+{
+  "captured_date": "2026-11-15",
+  "launcher": {
+    "version_code": 13,
+    "version_name": "3.4-video"
+  },
+  "model": "BRAVIA 4K VH22",
+  "schema": 1,
+  "scope": "theme-only",
+  "theme": {
+    "ambient_glow": false,
+    "app_keys": [
+      "scan:485:org.smarttube.stable",
+      "scan:492:tw.com.gamer.android.animad"
+    ],
+    "clock_glow": false,
+    "clock_wallpaper": true,
+    "clock_wallpaper_dim": 40,
+    "columns": 4,
+    "dock_apps": [
+      "com.netflix.ninja",
+      "org.smarttube.stable",
+      "com.internet.tvbrowser"
+    ],
+    "dock_opacity": 70,
+    "home_idle_clock_minutes": 2,
+    "key_filter": true,
+    "launcher_settings_button": true,
+    "live_tv_package": "com.sony.dtv.tvx",
+    "remote_key_names": [
+      "scan:485:YouTube",
+      "scan:492:myVideo"
+    ],
+    "show_inputs_pill": true,
+    "stock_home_redirect": "com.google.android.apps.tv.launcherx",
+    "wallpaper": true,
+    "wallpaper_dim": 15,
+    "wallpaper_order": "sequential",
+    "wallpaper_rotation_minutes": 30,
+    "wallpaper_true_color": true
+  }
+}
