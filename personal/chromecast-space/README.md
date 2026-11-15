@@ -1,6 +1,6 @@
 # Personal Chromecast space wallpapers
 
-This fork-only preset keeps the four-app dock and YouTube-to-SmartTube mapping, and rotates ten generated science-fiction landscapes every 30 minutes. Images are 1920×1080 JPEGs under 300 KB. `wallpaper_true_color` keeps dark sky gradients smooth on the Chromecast 4K with 2 GB RAM.
+This fork-only preset keeps the four-app dock and YouTube-to-SmartTube mapping. It alternates ten generated science-fiction landscapes and ten nature photographs every Monday, rotating within each group every 30 minutes. Images are prepared 16:9 JPEGs under 300 KB. `wallpaper_true_color` keeps dark sky gradients smooth on the Chromecast 4K with 2 GB RAM.
 
 Apply from the repository root after setting `TV_ADB_BINARY` and `TV_HOST` to the paired connection:
 
@@ -8,7 +8,7 @@ Apply from the repository root after setting `TV_ADB_BINARY` and `TV_HOST` to th
 tools/theme.sh personal/chromecast-space
 ```
 
-The wallpapers were generated with the built-in ImageGen tool (not an API/CLI workflow), then exported to JPEG. They are imaginative artwork, not astronomical photography. No third-party image service is required.
+The science-fiction wallpapers were generated with the built-in ImageGen tool, then exported to JPEG. They are imaginative artwork. The nature photographs come from the project’s nature-calm theme with author and licence attribution in [NATURE-CREDITS.md](NATURE-CREDITS.md). All images are stored locally.
 
 ## Assets and final prompts
 
@@ -72,6 +72,6 @@ The [Chromecast font build](../chromecast-font-home/README.md) adds an on-TV pic
 
 ## Weekly wallpaper sets
 
-The personal Chromecast build rotates two sets of ten wallpapers every Monday in the television's local time zone. Set A contains the original ten images. Set B uses the ten week-b-*.jpg images generated with the built-in image_gen tool. Each set follows the selected within-set interval. The on-TV weekly picker can also keep set A, keep set B or rotate all twenty. A fixed individual wallpaper takes precedence over the weekly choice.
+The personal Chromecast build rotates two sets of ten wallpapers every Monday in the television's local time zone. Set A contains the original ten science-fiction images. Set B uses ten real-world landscape photographs from the project nature-calm theme, named week-b-*.jpg. Their authors and licences are listed in [NATURE-CREDITS.md](NATURE-CREDITS.md). Each set follows the selected within-set interval. The on-TV weekly picker can also keep set A, keep set B or rotate all twenty. A fixed individual wallpaper takes precedence over the weekly choice.
 
-The final generation prompt set is saved in [weekly-prompts.json](weekly-prompts.json). The generated scenes use dark, low-detail space above the dock and around the clock.
+The set A generation prompts are documented above. Set B includes mountain lakes, forests, morning mist and a waterfall. These prepared photographs are reused unchanged. The weekly picker labels the groups as space and nature.

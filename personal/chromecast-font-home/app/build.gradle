@@ -27,6 +27,15 @@ tasks.register('referenceSources', Sync) {
                 ['WallpaperMood.select(rotation, moods,', 'WallpaperMood.select(weekly, moods,']
             ]
         ]
+        // Keep connection status and signal without reading the private network name.
+        patches['MainActivity.java'] = [
+            ['''                String ssid = info != null ? info.getSSID() : null;
+''', ''],
+            ['''                if (ssid != null) {
+                    ssid = ssid.replace("\\"", "").trim();
+                    if (!ssid.isEmpty() && !ssid.contains("unknown") && !ssid.equals("0x")) text = ssid;
+                }''', '']
+        ]
         patches['HomeKeyService.java'] = [[
             '    static void reloadAppKeys() {',
             '''    static void reloadProfile() {
@@ -58,7 +67,7 @@ tasks.register('referenceSources', Sync) {
             def file = new File(generatedJava.get().asFile, 'com/gathin/tvhome/' + name)
             def text = file.text
             replacements.each { pair ->
-                if (text.count(pair[0]) != 1) throw new GradleException('Weekly wallpaper hook changed: ' + name)
+                if (text.count(pair[0]) != 1) throw new GradleException('Personal source hook changed: ' + name)
                 text = text.replace(pair[0], pair[1])
             }
             file.text = text
@@ -98,7 +107,7 @@ android {
         applicationId 'com.gathin.tvhome'
         minSdk 26
         targetSdk 34
-        versionCode 16
+        versionCode 17
         versionName '3.5-personal'
     }
     sourceSets {

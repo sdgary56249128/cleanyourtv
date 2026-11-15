@@ -7,7 +7,7 @@
     <string-array name="personal_font_names">
         <item>Original · Outfit</item>
         <item>Newspaper serif</item>
-        <item>Old English masthead</item>
+        <item>Old English · fine strokes</item>
     </string-array>
     <string name="weekly_wallpapers">Weekly wallpaper sets</string>
     <string name="system_info_title">System information</string>
@@ -21,6 +21,6 @@
     <string name="profile_failed">Backup operation failed\n%1$s</string>
     <string name="confirm_profile_restore">Restore the saved Home settings?</string>
     <string name="git_profile_help">A paired Mac can export Home settings into a per-device Git profile. It contains theme, font, app order and shortcut choices.\n\nLatest synced commit  %1$s</string>
-    <string-array name="weekly_wallpaper_modes"><item>Switch sets every Monday</item><item>Space set A</item><item>Space set B</item><item>All wallpapers</item></string-array>
+    <string-array name="weekly_wallpaper_modes"><item>Switch sets every Monday</item><item>Space set A</item><item>Nature set B</item><item>All wallpapers</item></string-array>
     <string-array name="profile_actions"><item>Create local backup</item><item>Restore local backup</item><item>Git backup status</item></string-array>
 </resources>

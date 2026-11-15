@@ -30,7 +30,7 @@ final class FontChoice {
 
     static Typeface face(Context context, int index) {
         if (index == 1) return Typeface.create("serif", Typeface.NORMAL);
-        if (index == 2) return context.getResources().getFont(R.font.unifraktur_cook);
+        if (index == 2) return context.getResources().getFont(R.font.unifraktur_maguntia);
         return null;
     }
 

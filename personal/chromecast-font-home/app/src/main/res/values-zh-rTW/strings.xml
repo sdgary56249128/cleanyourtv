@@ -5,7 +5,7 @@
     <string-array name="personal_font_names">
         <item>原本字體 · Outfit</item>
         <item>報紙襯線</item>
-        <item>古英文報頭</item>
+        <item>古英文報頭 · 細筆畫</item>
     </string-array>
     <string name="weekly_wallpapers">每週壁紙組合</string>
     <string name="system_info_title">系統資訊</string>
@@ -19,6 +19,6 @@
     <string name="profile_failed">備份操作失敗\n%1$s</string>
     <string name="confirm_profile_restore">要還原已儲存的首頁設定嗎？</string>
     <string name="git_profile_help">由已配對的 Mac 將首頁設定匯出到每台裝置的 Git 設定檔，保存主題、字體、App 排序與快捷鍵。\n\n最近同步提交  %1$s</string>
-    <string-array name="weekly_wallpaper_modes"><item>每週一自動換組</item><item>固定星空 A 組</item><item>固定星空 B 組</item><item>全部壁紙輪播</item></string-array>
+    <string-array name="weekly_wallpaper_modes"><item>每週一自動換組</item><item>固定星空 A 組</item><item>固定自然 B 組</item><item>全部壁紙輪播</item></string-array>
     <string-array name="profile_actions"><item>建立本機備份</item><item>還原本機備份</item><item>Git 備份狀態</item></string-array>
 </resources>
