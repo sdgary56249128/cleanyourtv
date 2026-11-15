@@ -20,7 +20,7 @@ bash personal/verification/verify.sh --install
 
 複製 [config.example.json](config.example.json) 到 work/tv-verification.json，填入兩台目前的連線位址、adb、JAVA_HOME 與 ANDROID_HOME。這個檔案、報告及截圖都在 Git 忽略目錄。可用 --config 指定其他私人檔案。
 
-恢復 Sony 操作後，將私人設定的 devices.sony.paused 改成 false，再明確指定 --device sony 或 --device all；目前請保留暫停。
+恢復 Sony 操作後，將私人設定的 devices.sony.paused 改成 false，再明確指定 --device sony 或 --device all。
 
 Chromecast 的 devices.chromecast 可額外填 mdns_name，值為 adb mdns services 列出的已配對服務實例名稱。腳本只更新該名稱對應的 TLS 連線位址，不選擇其他電視或配對服務。這能處理無線偵錯連接埠改變；配對及授權仍須先完成。
 
@@ -37,7 +37,7 @@ Chromecast 的 devices.chromecast 可額外填 mdns_name，值為 adb mdns servi
 ## 常用選項
 
 ```bash
-# 恢復 Sony 操作且取消私人設定的暫停後，才驗證 Sony
+# 明確選取 Sony；私人設定 paused 必須為 false
 bash personal/verification/verify.sh --device sony --install
 
 # 兩個版本只做建置與本機測試，不接觸電視
@@ -48,3 +48,5 @@ bash personal/verification/verify.sh --skip-build --skip-host-tests
 ```
 
 兩台各有獨立程序與目標參數。型號不符、未授權、連線中斷、舊 APK、沒有壁紙或無法進入多列 App 網格都會報錯；關閉系統動畫／減少動態效果時，景深測試也會明確報錯，不會更改該設定。手動停用的景深選項可以暫時測試後還原。
+
+目前 Chromecast 個人版 versionCode 18、Sony 影片版 versionCode 19 均已完成景深實機自動驗證。兩台的設定與 App 排序保存檢查均通過，Sony 預設仍沿用自然照片及其六鍵／影片設定。

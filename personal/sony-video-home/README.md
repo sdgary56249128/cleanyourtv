@@ -59,4 +59,4 @@ tools/venv/bin/python -I tools/tv.py 'rm -f /data/local/tmp/background.mp4'
 
 目前個人建置為 3.5-video、versionCode 19，重用此 fork 的 v3.5 參考來源，保留六鍵學習與本機影片功能。
 
-本次景深版本已通過 330 項 JVM 測試與 lint；Sony 實機回歸尚未完成，裝置操作已暫停。共用驗證預設只選 Chromecast，Sony 必須先取消私人設定中的暫停並明確選取。
+本次景深版本已通過 330 項 JVM 測試與 lint，並在 Sony KM-55X85L 完成實機自動回歸。已驗證六鍵與影片設定入口、上下導覽遠近、關閉模式、圖片邊緣覆蓋、idle 停止，以及原設定、排序、主題、停用清單與 Home 輔助服務保存。共用驗證預設只選 Chromecast；Sony 以 --device sony 或 --device all 明確選取，私人設定的 paused 可暫停該台。
