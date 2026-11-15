@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="font_choice">字體 · %1$s</string>
+    <string name="font_picker_title">首頁與待機字體</string>
+    <string-array name="personal_font_names">
+        <item>原本字體 · Outfit</item>
+        <item>報紙襯線</item>
+        <item>古英文報頭</item>
+    </string-array>
+</resources>

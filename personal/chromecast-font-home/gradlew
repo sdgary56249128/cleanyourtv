@@ -1,0 +1,4 @@
+#!/bin/sh
+# Use the repository's existing Gradle wrapper for this independent project.
+project_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+exec "$project_dir/../../launcher/gradlew" -p "$project_dir" "$@"

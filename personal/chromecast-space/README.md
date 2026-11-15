@@ -65,3 +65,7 @@ This fork merges upstream v3.4.0 while keeping the space theme and remote app pi
 ## On-TV scene controls
 
 Home gear → Launcher settings offers idle-clock timeout, wallpaper rotation interval and order, and Home wallpaper brightness. Each picker can follow the theme again. A new interval resumes the wallpaper collection after a fixed-picture choice. Settings apply on returning Home, persist across app upgrades, and reset with Follow theme or a theme push.
+
+## Font choices
+
+The [Chromecast font build](../chromecast-font-home/README.md) adds an on-TV picker for Outfit, a newspaper serif and an Old English masthead face. It shares this launcher and theme, with the chosen typeface applied to Home and the clock.
