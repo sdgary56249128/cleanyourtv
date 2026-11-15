@@ -1,10 +1,10 @@
 {
   "launcher": {
-    "version_code": 17,
+    "version_code": 18,
     "version_name": "3.5-personal"
   },
   "model": "Chromecast",
-  "order": "tvhome-order 1\ndock com.netflix.ninja,tw.com.gamer.android.animad,org.smarttube.stable,com.mxtech.videoplayer.ad\ncom.netflix.ninja/.MainActivity\ntw.com.gamer.android.animad/.tv.ui.TVAnimadComposeActivity\norg.smarttube.stable/com.liskovsoft.smartyoutubetv2.tv.ui.main.SplashActivity\ncom.mxtech.videoplayer.ad/.ActivityWelcomeMX\ncom.adguard.android/.ui.activity.SplashActivity\ncom.internet.tvbrowser/.MainActivity\ncom.alphainventor.filemanager/.activity.MainActivity\ncom.yablio.sendfilestotv/.ui.MainActivity\ncom.spocky.projengmenu/.ui.home.MainActivity\ncom.android.vending/com.google.android.finsky.tvmainactivity.TvMainActivity\ncom.android.tv.settings/.MainSettings\n",
+  "order": "tvhome-order 1\ndock com.netflix.ninja,tw.com.gamer.android.animad,org.smarttube.stable,com.mxtech.videoplayer.ad\ncom.netflix.ninja/.MainActivity\norg.smarttube.stable/com.liskovsoft.smartyoutubetv2.tv.ui.main.SplashActivity\ntw.com.gamer.android.animad/.tv.ui.TVAnimadComposeActivity\ncom.mxtech.videoplayer.ad/.ActivityWelcomeMX\ncom.adguard.android/.ui.activity.SplashActivity\ncom.internet.tvbrowser/.MainActivity\ncom.alphainventor.filemanager/.activity.MainActivity\ncom.yablio.sendfilestotv/.ui.MainActivity\ncom.spocky.projengmenu/.ui.home.MainActivity\ncom.android.vending/com.google.android.finsky.tvmainactivity.TvMainActivity\ncom.android.tv.settings/.MainSettings\n",
   "preferences": {
     "advanced_effects": true,
     "dock_opacity": 30,

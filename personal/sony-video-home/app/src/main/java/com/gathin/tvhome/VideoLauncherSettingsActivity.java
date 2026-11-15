@@ -15,12 +15,14 @@ public final class VideoLauncherSettingsActivity extends LauncherSettingsActivit
         remote.setOnClickListener(v -> showRemoteSlots());
         LinearLayout rows = (LinearLayout) findViewById(R.id.sceneChoices).getParent();
         TextView choice = new TextView(this, null, 0, R.style.SettingsRow);
+        choice.setId(R.id.personalVideoChoice);
         choice.setText("影片背景");
         choice.setOnClickListener(v -> startActivity(new Intent(this, VideoSettingsActivity.class)));
         float density = getResources().getDisplayMetrics().density;
         LinearLayout.LayoutParams layout = new LinearLayout.LayoutParams(-1, (int) (52 * density));
         layout.topMargin = (int) (10 * density);
         rows.addView(choice, rows.indexOfChild(findViewById(R.id.sceneChoices)) + 1, layout);
+        DepthSettings.add(this, rows, rows.indexOfChild(choice) + 1);
     }
 
     private void showRemoteSlots() {

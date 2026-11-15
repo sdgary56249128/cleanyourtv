@@ -17,7 +17,7 @@ cd personal/chromecast-font-home
 ./gradlew --no-daemon --no-watch-fs --max-workers=2 testReleaseUnitTest lintRelease assembleRelease
 ```
 
-輸出為 app/build/outputs/apk/release/app-release.apk，套件 com.gathin.tvhome，versionName 3.5-personal，versionCode 17。採用與參考版相同的本機 debug 簽章。此個人版會將字型、授權與選單一同打包。
+輸出為 app/build/outputs/apk/release/app-release.apk，套件 com.gathin.tvhome，versionName 3.5-personal，versionCode 18。採用與參考版相同的本機 debug 簽章。此個人版會將字型、授權與選單一同打包。
 
 選回「原本字體」並返回首頁即可恢復原先外觀。跨版本覆蓋更新需使用相同簽章，且 versionCode 至少為目前安裝值。
 
@@ -30,3 +30,9 @@ cd personal/chromecast-font-home
 「設定備份」可建立及還原本機首頁備份，也能查看已配對 Mac 最近同步到 Git 的提交。每台 Git 設定檔與同步方式見 [裝置首頁設定](../device-profiles/README.md)。
 
 首頁 Wi-Fi 按鈕只顯示連線類型與狀態，不讀取或顯示 SSID。訊號、離線、VPN 與網路設定入口沿用原有行為。
+
+## 捲動景深與共用驗證
+
+首頁設定的「景深壁紙」提供關閉、輕微與適中。往下導覽時照片縮小拉遠，回到頂端時靠近，停下操作即停止動畫。[共用實作](../shared-home/README.md)只改動既有背景的縮放與位移。
+
+兩台的建置與實機測試統一由[自動驗證腳本](../verification/README.md)執行，支援驗證原有設定與排序保存。

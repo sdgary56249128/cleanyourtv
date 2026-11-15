@@ -16,6 +16,7 @@ tasks.register('referenceSources', Sync) {
         // Reuse the shared wallpaper players and their existing minute ticks.
         def patches = [
             'WallpaperPlayer.java': [
+                ['image = new ImageView(context);', 'image = new ImageView(context);\n        image.setTag("personal.wallpaper");'],
                 ['if (moods.isEmpty()) return files;', 'List<File> weekly = WeeklyWallpapers.select(root.getContext(), files);\n        if (moods.isEmpty()) return weekly;'],
                 ['WallpaperMood.select(files, moods,', 'WallpaperMood.select(weekly, moods,']
             ],
@@ -94,6 +95,8 @@ tasks.register('personalManifest') {
             'android:screenOrientation': 'landscape'])
         application.appendNode('provider', ['android:name': '.ProfileProvider', 'android:exported': 'true',
             'android:authorities': 'com.gathin.tvhome.profile', 'android:permission': 'android.permission.WRITE_SECURE_SETTINGS'])
+        application.appendNode('provider', ['android:name': '.HomeDiagnosticsProvider', 'android:exported': 'true',
+            'android:authorities': 'com.gathin.tvhome.diagnostics', 'android:permission': 'android.permission.WRITE_SECURE_SETTINGS'])
         def output = generatedManifest.get().asFile
         output.parentFile.mkdirs()
         output.text = groovy.xml.XmlUtil.serialize(manifest)
@@ -107,16 +110,19 @@ android {
         applicationId 'com.gathin.tvhome'
         minSdk 26
         targetSdk 34
-        versionCode 17
+        versionCode 18
         versionName '3.5-personal'
     }
     sourceSets {
         main {
             java.srcDir generatedJava
+            java.srcDir rootProject.file('../shared-home/src/main/java')
+            res.srcDir rootProject.file('../shared-home/src/main/res')
             res.srcDir new File(reference, 'res')
             manifest.srcFile generatedManifest
         }
         test.java.srcDir rootProject.file('../../launcher/app/src/test/java')
+        test.java.srcDir rootProject.file('../shared-home/src/test/java')
     }
     buildTypes.release {
         minifyEnabled true

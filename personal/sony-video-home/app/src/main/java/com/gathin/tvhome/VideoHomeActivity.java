@@ -19,12 +19,14 @@ public final class VideoHomeActivity extends MainActivity implements TextureView
     private MediaPlayer player;
     private Surface surface;
     private boolean resumed;
+    private WallpaperDepth depth;
 
     @Override protected void onCreate(Bundle state) {
         super.onCreate(state);
         FrameLayout root = findViewById(R.id.root);
         video = new TextureView(this);
         video.setFocusable(false);
+        video.setTag("personal.video");
         video.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
         video.setSurfaceTextureListener(this);
         video.setVisibility(View.GONE);
@@ -34,11 +36,13 @@ public final class VideoHomeActivity extends MainActivity implements TextureView
         shade.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
         shade.setVisibility(View.GONE);
         root.addView(shade, 2, new FrameLayout.LayoutParams(-1, -1));
+        depth = new WallpaperDepth(this, root, findViewById(R.id.grid));
     }
 
     @Override protected void onResume() {
         super.onResume();
         resumed = true;
+        if (depth != null) depth.start();
         shade.setBackgroundColor((Config.load(this).wallpaperDim * 255 / 100) << 24);
         File file = VideoSettingsActivity.videoFile(this);
         boolean enabled = getSharedPreferences("video_background", MODE_PRIVATE).getBoolean("enabled", false);
@@ -105,10 +109,11 @@ public final class VideoHomeActivity extends MainActivity implements TextureView
 
     @Override protected void onPause() {
         resumed = false;
+        if (depth != null) depth.stop();
         hideVideo();
         super.onPause();
     }
-    @Override protected void onDestroy() { releasePlayer(); super.onDestroy(); }
+    @Override protected void onDestroy() { if (depth != null) depth.close(); releasePlayer(); super.onDestroy(); }
     @Override public void onSurfaceTextureAvailable(SurfaceTexture t, int w, int h) { play(t); }
     @Override public void onSurfaceTextureSizeChanged(SurfaceTexture t, int w, int h) {
         if (player != null) crop(player.getVideoWidth(), player.getVideoHeight());

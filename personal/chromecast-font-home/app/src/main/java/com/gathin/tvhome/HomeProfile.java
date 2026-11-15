@@ -35,7 +35,7 @@ final class HomeProfile {
     private static final Set<String> BOOLEANS = new HashSet<>(Arrays.asList("animations", "advanced_effects"));
     private static final Set<String> STRINGS = new HashSet<>(Arrays.asList(
             "clock_format", "wallpaper_choice", "wallpaper_order", "open_on_start", "personal_home_font",
-            WeeklyWallpapers.KEY));
+            WeeklyWallpapers.KEY, DepthSettings.KEY));
 
     private HomeProfile() {}
 

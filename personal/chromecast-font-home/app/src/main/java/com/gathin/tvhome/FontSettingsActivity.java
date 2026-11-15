@@ -15,6 +15,7 @@ public final class FontSettingsActivity extends LauncherSettingsActivity {
     @Override protected void onCreate(Bundle state) {
         super.onCreate(state);
         fontChoice = new TextView(this, null, 0, R.style.SettingsRow);
+        fontChoice.setId(R.id.personalFontChoice);
         fontChoice.setOnClickListener(view -> showFontPicker());
         fontChoice.setText(getString(R.string.font_choice, names()[FontChoice.selected(this)]));
         LinearLayout rows = (LinearLayout) findViewById(R.id.sceneChoices).getParent();
@@ -25,11 +26,15 @@ public final class FontSettingsActivity extends LauncherSettingsActivity {
         addRow(rows, R.string.weekly_wallpapers, this::showWeeklyPicker);
         addRow(rows, R.string.system_info_title, () -> startActivity(new Intent(this, SystemInfoActivity.class)));
         addRow(rows, R.string.profile_title, this::showBackup);
+        DepthSettings.add(this, rows, rows.indexOfChild(findViewById(R.id.wallpaperChoice)));
     }
 
     private void addRow(LinearLayout rows, int label, Runnable action) {
         TextView row = new TextView(this, null, 0, R.style.SettingsRow);
         row.setText(label);
+        if (label == R.string.weekly_wallpapers) row.setId(R.id.personalWeeklyChoice);
+        else if (label == R.string.system_info_title) row.setId(R.id.personalInfoChoice);
+        else if (label == R.string.profile_title) row.setId(R.id.personalBackupChoice);
         row.setOnClickListener(view -> action.run());
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(-1,
                 Math.round(52 * getResources().getDisplayMetrics().density));

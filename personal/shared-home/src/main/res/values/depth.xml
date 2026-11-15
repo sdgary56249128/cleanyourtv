@@ -1,0 +1,5 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <item name="personalDepthChoice" type="id" />
+    <string name="depth_wallpaper">Wallpaper depth</string>
+    <string-array name="depth_modes"><item>Default · Standard</item><item>Off</item><item>Subtle</item><item>Standard</item></string-array>
+</resources>

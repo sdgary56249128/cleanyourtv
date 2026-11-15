@@ -13,6 +13,10 @@ tasks.register('personalSources', Sync) {
         def renamed = new File(original.parentFile, 'ReferenceHomeKeyService.java')
         renamed.text = original.text.replaceAll('\\bHomeKeyService\\b', 'ReferenceHomeKeyService')
         original.delete()
+        def wallpaper = new File(referenceJava.get().asFile, 'com/gathin/tvhome/WallpaperPlayer.java')
+        def hook = 'image = new ImageView(context);'
+        if (wallpaper.text.count(hook) != 1) throw new GradleException('Personal wallpaper hook changed')
+        wallpaper.text = wallpaper.text.replace(hook, hook + '\n        image.setTag("personal.wallpaper");')
     }
 }
 tasks.register('personalManifest') {
@@ -35,6 +39,8 @@ tasks.register('personalManifest') {
             'android:screenOrientation': 'landscape'])
         application.appendNode('provider', ['android:name': '.VideoFileProvider', 'android:exported': 'true',
             'android:authorities': 'com.gathin.tvhome.video', 'android:permission': 'android.permission.WRITE_SECURE_SETTINGS'])
+        application.appendNode('provider', ['android:name': '.HomeDiagnosticsProvider', 'android:exported': 'true',
+            'android:authorities': 'com.gathin.tvhome.diagnostics', 'android:permission': 'android.permission.WRITE_SECURE_SETTINGS'])
         def output = generatedManifest.get().asFile
         output.parentFile.mkdirs()
         output.text = groovy.xml.XmlUtil.serialize(manifest)
@@ -43,12 +49,15 @@ tasks.register('personalManifest') {
 android {
     namespace 'com.gathin.tvhome'
     compileSdk 34
-    defaultConfig { applicationId 'com.gathin.tvhome'; minSdk 26; targetSdk 34; versionCode 13; versionName '3.4-video' }
+    defaultConfig { applicationId 'com.gathin.tvhome'; minSdk 26; targetSdk 34; versionCode 19; versionName '3.5-video' }
     sourceSets.main {
         java.srcDir referenceJava
+        java.srcDir rootProject.file('../shared-home/src/main/java')
+        res.srcDir rootProject.file('../shared-home/src/main/res')
         res.srcDir new File(launcher, 'res')
         manifest.srcFile generatedManifest
     }
+    sourceSets.test.java.srcDirs += [rootProject.file('../../launcher/app/src/test/java'), rootProject.file('../shared-home/src/test/java')]
     buildTypes.release {
         minifyEnabled true
         shrinkResources true

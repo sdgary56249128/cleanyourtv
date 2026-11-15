@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <item name="personalFontChoice" type="id" />
+    <item name="personalWeeklyChoice" type="id" />
+    <item name="personalInfoChoice" type="id" />
+    <item name="personalBackupChoice" type="id" />
     <!-- This personal build provides English and Traditional Chinese, with English fallback elsewhere. -->
     <string name="font_choice" tools:ignore="MissingTranslation">Font · %1$s</string>
     <string name="font_picker_title" tools:ignore="MissingTranslation">Home and screensaver font</string>

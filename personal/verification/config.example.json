@@ -1,0 +1,16 @@
+{
+  "adb": "/absolute/path/to/adb",
+  "build_env": {
+    "JAVA_HOME": "/absolute/path/to/jdk/Contents/Home",
+    "ANDROID_HOME": "/absolute/path/to/android-sdk"
+  },
+  "devices": {
+    "chromecast": {
+      "host": "<Chromecast IP>:<wireless debugging connection port>"
+    },
+    "sony": {
+      "host": "<Sony IP>:5555",
+      "paused": true
+    }
+  }
+}

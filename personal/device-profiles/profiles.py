@@ -18,7 +18,7 @@ import uuid
 
 ROOT = Path(__file__).resolve().parents[2]
 DIRECTORY = Path(__file__).resolve().parent
-PREFERENCE_KEYS = set("columns rows_below_dock dock_opacity home_idle_clock_minutes wallpaper_rotation_minutes wallpaper_dim animations advanced_effects clock_format wallpaper_choice wallpaper_order open_on_start personal_home_font weekly_wallpaper_mode".split())
+PREFERENCE_KEYS = set("columns rows_below_dock dock_opacity home_idle_clock_minutes wallpaper_rotation_minutes wallpaper_dim animations advanced_effects clock_format wallpaper_choice wallpaper_order open_on_start personal_home_font weekly_wallpaper_mode wallpaper_depth".split())
 REMOTE_CHOICE = re.compile(r"remote_key_choice_(?:hold:)?(?:[1-9][0-9]{0,5}|scan:[1-9][0-9]{0,5})")
 PRIVATE = re.compile(r"(?:\b(?:\d{1,3}\.){3}\d{1,3}\b|[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}|(?:smb|https?|tailscale)://)", re.I)
 THEME_KEYS = set("wallpaper wallpaper_rotation_minutes wallpaper_order wallpaper_dim wallpaper_true_color ambient_glow app_glow dock_apps columns rows_below_dock dock_opacity dock_glass show_inputs_pill live_tv_package stock_home_redirect app_keys remote_key_names launcher_settings_button home_idle_clock_minutes clock_wallpaper clock_wallpaper_dim clock_glow clock_format app_labels launch_actions hidden_apps key_filter inputs_connected_only inputs_cec_state_only wallpaper_captions".split())

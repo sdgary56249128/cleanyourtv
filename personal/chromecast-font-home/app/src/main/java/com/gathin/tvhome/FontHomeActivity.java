@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public final class FontHomeActivity extends MainActivity {
     private RecyclerView grid;
     private Typeface font;
+    private WallpaperDepth depth;
     private final RecyclerView.OnChildAttachStateChangeListener fontListener =
             new RecyclerView.OnChildAttachStateChangeListener() {
                 @Override public void onChildViewAttachedToWindow(View view) { FontChoice.apply(view, font); }
@@ -22,9 +23,14 @@ public final class FontHomeActivity extends MainActivity {
         FontChoice.apply(getWindow().getDecorView(), font);
         grid = findViewById(R.id.grid);
         if (font != null) grid.addOnChildAttachStateChangeListener(fontListener);
+        depth = new WallpaperDepth(this, findViewById(R.id.root), grid);
     }
 
+    @Override protected void onResume() { super.onResume(); if (depth != null) depth.start(); }
+    @Override protected void onPause() { if (depth != null) depth.stop(); super.onPause(); }
+
     @Override protected void onDestroy() {
+        if (depth != null) depth.close();
         if (grid != null) grid.removeOnChildAttachStateChangeListener(fontListener);
         super.onDestroy();
     }
