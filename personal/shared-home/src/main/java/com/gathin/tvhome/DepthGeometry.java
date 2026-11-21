@@ -16,12 +16,12 @@ final class DepthGeometry {
 
     static float scale(float progress, String mode) {
         float p = clamp(progress);
-        if ("off".equals(mode)) return 1f;
+        if ("off".equals(mode) || "planet".equals(mode)) return 1f;
         return "subtle".equals(mode) ? 1.05f - .035f * p : 1.10f - .08f * p;
     }
 
     static float translation(float progress, int height, String mode) {
-        if ("off".equals(mode)) return 0f;
+        if ("off".equals(mode) || "planet".equals(mode)) return 0f;
         return -Math.max(0, height) * clamp(progress) * ("subtle".equals(mode) ? .005f : .008f);
     }
 }

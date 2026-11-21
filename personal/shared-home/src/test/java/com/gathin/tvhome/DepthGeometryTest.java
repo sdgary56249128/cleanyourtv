@@ -35,4 +35,12 @@ public class DepthGeometryTest {
         assertEquals(DepthGeometry.scale(1, "standard"), DepthGeometry.scale(5, "standard"), 0f);
         assertEquals(0f, DepthGeometry.clamp(Float.NaN), 0f);
     }
+
+    @Test public void planetFliesOverAStationaryWallpaper() {
+        for (int step = 0; step <= 100; step++) {
+            float progress = step / 100f;
+            assertEquals(1f, DepthGeometry.scale(progress, "planet"), 0f);
+            assertEquals(0f, DepthGeometry.translation(progress, 1080, "planet"), 0f);
+        }
+    }
 }

@@ -48,7 +48,7 @@ public final class VideoHomeActivity extends MainActivity implements TextureView
         resumed = true;
         if (depth != null) depth.start();
         boolean enabled = getSharedPreferences("video_background", MODE_PRIVATE).getBoolean("enabled", false);
-        if (!enabled) return; // onPause already released any previous playback.
+        if (!enabled || depth.usesPlanet()) return; // The flyby reveals the photo when the planet leaves.
         File file = VideoSettingsActivity.videoFile(this);
         if (file.isFile() && file.length() > 0) {
             if (video == null) createVideoLayer();

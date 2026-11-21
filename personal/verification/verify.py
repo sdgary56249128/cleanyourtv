@@ -19,7 +19,7 @@ TARGETS = {
     "chromecast": {"project": "chromecast-font-home", "model": "Chromecast", "home": "FontHomeActivity", "settings": "FontSettingsActivity"},
     "sony": {"project": "sony-video-home", "model": "BRAVIA 4K VH22", "sku": "KM-55X85L", "home": "VideoHomeActivity", "settings": "VideoLauncherSettingsActivity"},
 }
-MODES = ["default", "off", "subtle", "standard"]
+MODES = ["default", "off", "subtle", "standard", "planet"]
 
 
 def require(condition, message):
@@ -255,6 +255,30 @@ class Device:
         require(state["motion"]["saved_mode"] == journal["mode"], "Original depth mode was not restored")
         self.pending.unlink()
 
+    def check_planet(self):
+        near = self.choose_mode("planet")["motion"]
+        require(near["progress"] == 0 and near["focus_position"] >= 0, "Expected the top row at the start of the flyby")
+        planet = near["planet"]
+        require(planet["visible"] and planet["size_px"] > 2 * near["height"], "Missing close planet")
+        self.shot("planet-near")
+        self.key("KEYCODE_DPAD_DOWN")
+        far = self.settled()["motion"]
+        distant = far["planet"]
+        require(far["progress"] == 1 and far["focus_position"] >= far["columns"], "First Down did not depart")
+        require(distant["center_x"] - distant["size_px"] > far["width"] and not distant["visible"],
+                "Planet did not completely exit the screen")
+        require(far["frames"] - near["frames"] >= 3 and distant["rotation"] != planet["rotation"],
+                "Planet skipped the animated path")
+        require(near["scale"] == far["scale"] == 1 and near["translation_y"] == far["translation_y"] == 0,
+                "Planet moved the landscape")
+        self.shot("planet-away")
+        require(self.settled()["motion"]["frames"] == far["frames"], "Flight continued while parked")
+        self.key("KEYCODE_DPAD_UP")
+        returned = self.settled()["motion"]
+        require(returned["planet"] == planet, "Top-row return did not restore the close pass")
+        self.checks.append("Planet flies completely out on the first Down and returns on Up over a stationary landscape")
+        return {"near": near, "far": far, "returned": returned}
+
     def backup(self):
         backup = ROOT / "backup" / self.output.parent.name / self.name
         backup.mkdir(parents=True, exist_ok=True)
@@ -351,13 +375,16 @@ class Device:
                 require(adjacent["progress"] == back["progress"] and adjacent["frames"] == back["frames"],
                         "Same-row navigation unnecessarily transformed the wallpaper")
                 self.checks.append("Moving one tile within a row produced zero wallpaper transform updates")
+            flight = self.check_planet()
             off = self.choose_mode("off")["motion"]
+            require("planet" not in off, "Planet layer survived the mode switch")
             require(abs(off["scale"] - 1) < .001 and abs(off["translation_y"]) < .001, "Off mode is not a still, uncropped wallpaper")
             self.key("KEYCODE_DPAD_DOWN")
             off_after = self.settled()["motion"]
             require(off_after["scale"] == 1 and off_after["translation_y"] == 0, "Off mode moves during navigation")
             self.checks.append("Off mode disables both zoom and parallax")
-            self.measurements = {"near": near, "far": far, "idle": idle, "back": back, "off": off_after}
+            self.measurements = {"near": near, "far": far, "idle": idle, "back": back, "off": off_after,
+                                 "planet": flight}
         finally:
             # Leave the journal in place if the transport disappears; the next run restores first.
             self.recover()

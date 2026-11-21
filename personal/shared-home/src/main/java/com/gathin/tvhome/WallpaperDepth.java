@@ -6,6 +6,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -20,6 +21,7 @@ final class WallpaperDepth {
     private final FrameLayout root;
     private final RecyclerView grid;
     private final ImageView wallpaper;
+    private PlanetFlight flight;
     private View video;
     private ValueAnimator animator;
     private float progress;
@@ -55,10 +57,21 @@ final class WallpaperDepth {
     void start() {
         active = true;
         Config config = Config.load(activity);
-        mode = config.reducedMotion || !config.animations ? "off" : DepthSettings.mode(activity);
+        mode = config.reducedMotion || !config.animations || !ValueAnimator.areAnimatorsEnabled()
+                ? "off" : DepthSettings.mode(activity);
+        if (usesPlanet() && flight == null) {
+            flight = new PlanetFlight(activity);
+            int sky = root.indexOfChild(root.findViewById(R.id.sky));
+            root.addView(flight, sky + 1, new FrameLayout.LayoutParams(-1, -1));
+        } else if (!usesPlanet() && flight != null) {
+            root.removeView(flight);
+            flight = null;
+        }
         move(target(), false);
         schedule();
     }
+
+    boolean usesPlanet() { return "planet".equals(mode); }
 
     void stop() {
         active = false;
@@ -95,7 +108,8 @@ final class WallpaperDepth {
         if (!(layout instanceof GridLayoutManager)) return 0f;
         GridLayoutManager manager = (GridLayoutManager) layout;
         if (manager.getOrientation() != RecyclerView.VERTICAL) return 0f;
-        return DepthGeometry.progress(position(), grid.getAdapter() == null ? 0 : grid.getAdapter().getItemCount(), manager.getSpanCount());
+        float row = DepthGeometry.progress(position(), grid.getAdapter() == null ? 0 : grid.getAdapter().getItemCount(), manager.getSpanCount());
+        return usesPlanet() && row > 0f ? 1f : row;
     }
 
     private void move(float next, boolean animate) {
@@ -111,8 +125,13 @@ final class WallpaperDepth {
             progress = next; apply(); return;
         }
         animator = ValueAnimator.ofFloat(progress, next);
-        animator.setDuration(320);
-        animator.setInterpolator(new DecelerateInterpolator());
+        if (usesPlanet()) {
+            animator.setDuration(Math.max(160, Math.round(1150f * Math.abs(next - progress))));
+            animator.setInterpolator(new AccelerateDecelerateInterpolator());
+        } else {
+            animator.setDuration(320);
+            animator.setInterpolator(new DecelerateInterpolator());
+        }
         animator.addUpdateListener(value -> { progress = (float) value.getAnimatedValue(); apply(); });
         animator.start();
     }
@@ -120,7 +139,11 @@ final class WallpaperDepth {
     private void apply() {
         float scale = DepthGeometry.scale(progress, mode);
         float translation = DepthGeometry.translation(progress, root.getHeight(), mode);
-        if (scale == lastScale && translation == lastY) return;
+        boolean flightMoved = flight != null && flight.setPhase(progress);
+        if (scale == lastScale && translation == lastY) {
+            if (flightMoved) frames++;
+            return;
+        }
         lastScale = scale;
         lastY = translation;
         if (wallpaper != null) transform(wallpaper, scale, translation);
@@ -141,6 +164,7 @@ final class WallpaperDepth {
                 .put("saved_mode", DepthSettings.saved(context));
         if (depth == null) return result;
         ImageView layer = depth.wallpaper;
+        if (depth.flight != null) result.put("planet", depth.flight.snapshot());
         RecyclerView.LayoutManager layout = depth.grid.getLayoutManager();
         return result.put("effective_mode", depth.mode).put("progress", depth.progress)
                 .put("columns", layout instanceof GridLayoutManager ? ((GridLayoutManager) layout).getSpanCount() : 1)

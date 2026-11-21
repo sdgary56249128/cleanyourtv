@@ -53,7 +53,7 @@ tasks.register('personalManifest') {
 android {
     namespace 'com.gathin.tvhome'
     compileSdk 34
-    defaultConfig { applicationId 'com.gathin.tvhome'; minSdk 26; targetSdk 34; versionCode 21; versionName '3.6-video' }
+    defaultConfig { applicationId 'com.gathin.tvhome'; minSdk 26; targetSdk 34; versionCode 23; versionName '3.6-video' }
     sourceSets.main {
         java.srcDir referenceJava
         java.srcDir rootProject.file('../shared-home/src/main/java')

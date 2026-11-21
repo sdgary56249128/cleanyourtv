@@ -1,4 +1,4 @@
 <resources>
     <string name="depth_wallpaper">景深壁紙</string>
-    <string-array name="depth_modes"><item>預設 · 適中</item><item>關閉</item><item>輕微</item><item>適中</item></string-array>
+    <string-array name="depth_modes"><item>預設 · 適中</item><item>關閉</item><item>輕微</item><item>適中</item><item>星球飛掠</item></string-array>
 </resources>

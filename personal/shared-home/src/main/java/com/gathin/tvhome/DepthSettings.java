@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 final class DepthSettings {
     static final String KEY = "wallpaper_depth";
-    static final String[] VALUES = {"default", "off", "subtle", "standard"};
+    static final String[] VALUES = {"default", "off", "subtle", "standard", "planet"};
     private DepthSettings() {}
 
     static String saved(Context context) {
