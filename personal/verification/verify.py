@@ -342,6 +342,15 @@ class Device:
             else: raise RuntimeError("Could not return to the top row")
             require(abs(back["scale"] - near["scale"]) < .002, "Up navigation did not return to the original camera scale")
             self.checks.append("Up navigation brings wallpaper close again")
+            if min(back["columns"], back["item_count"]) > 1:
+                pos = back["focus_position"]
+                require(0 <= pos < back["columns"], "First grid row did not receive focus")
+                self.key("KEYCODE_DPAD_LEFT" if pos else "KEYCODE_DPAD_RIGHT")
+                adjacent = self.settled()["motion"]
+                require(adjacent["focus_position"] == (pos - 1 if pos else 1), "Adjacent tile did not receive focus")
+                require(adjacent["progress"] == back["progress"] and adjacent["frames"] == back["frames"],
+                        "Same-row navigation unnecessarily transformed the wallpaper")
+                self.checks.append("Moving one tile within a row produced zero wallpaper transform updates")
             off = self.choose_mode("off")["motion"]
             require(abs(off["scale"] - 1) < .001 and abs(off["translation_y"]) < .001, "Off mode is not a still, uncropped wallpaper")
             self.key("KEYCODE_DPAD_DOWN")

@@ -17,7 +17,7 @@ cd personal/chromecast-font-home
 ./gradlew --no-daemon --no-watch-fs --max-workers=2 testReleaseUnitTest lintRelease assembleRelease
 ```
 
-輸出為 app/build/outputs/apk/release/app-release.apk，套件 com.gathin.tvhome，versionName 3.5-personal，versionCode 18。採用與參考版相同的本機 debug 簽章。此個人版會將字型、授權與選單一同打包。
+輸出為 app/build/outputs/apk/release/app-release.apk，套件 com.gathin.tvhome，versionName 3.6-personal，versionCode 20。採用與參考版相同的本機 debug 簽章。此個人版會將字型、授權與選單一同打包。
 
 選回「原本字體」並返回首頁即可恢復原先外觀。跨版本覆蓋更新需使用相同簽章，且 versionCode 至少為目前安裝值。
 

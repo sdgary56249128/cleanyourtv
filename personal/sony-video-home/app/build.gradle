@@ -1,13 +1,17 @@
 plugins { id 'com.android.application' }
 
 // Reuse the reference launcher's sources and resources. Video code lives only in this personal build.
+apply from: rootProject.file('../shared-home/wifi-status.gradle')
+
 def launcher = rootProject.file('../../launcher/app/src/main')
 def generatedManifest = layout.buildDirectory.file('generated/personal/AndroidManifest.xml')
 def referenceJava = layout.buildDirectory.dir('generated/reference/java')
 tasks.register('personalSources', Sync) {
+    inputs.file(rootProject.file('../shared-home/wifi-status.gradle'))
     from new File(launcher, 'java')
     into referenceJava
     doLast {
+        hideWifiName(new File(referenceJava.get().asFile, 'com/gathin/tvhome/MainActivity.java'))
         // Keep the public HomeKeyService component name while wrapping only the personal build's key events.
         def original = new File(referenceJava.get().asFile, 'com/gathin/tvhome/HomeKeyService.java')
         def renamed = new File(original.parentFile, 'ReferenceHomeKeyService.java')
@@ -49,7 +53,7 @@ tasks.register('personalManifest') {
 android {
     namespace 'com.gathin.tvhome'
     compileSdk 34
-    defaultConfig { applicationId 'com.gathin.tvhome'; minSdk 26; targetSdk 34; versionCode 19; versionName '3.5-video' }
+    defaultConfig { applicationId 'com.gathin.tvhome'; minSdk 26; targetSdk 34; versionCode 21; versionName '3.6-video' }
     sourceSets.main {
         java.srcDir referenceJava
         java.srcDir rootProject.file('../shared-home/src/main/java')

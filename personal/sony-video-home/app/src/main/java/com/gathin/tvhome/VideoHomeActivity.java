@@ -24,9 +24,13 @@ public final class VideoHomeActivity extends MainActivity implements TextureView
     @Override protected void onCreate(Bundle state) {
         super.onCreate(state);
         FrameLayout root = findViewById(R.id.root);
+        depth = new WallpaperDepth(this, root, findViewById(R.id.grid));
+    }
+
+    private void createVideoLayer() {
+        FrameLayout root = findViewById(R.id.root);
         video = new TextureView(this);
         video.setFocusable(false);
-        video.setTag("personal.video");
         video.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
         video.setSurfaceTextureListener(this);
         video.setVisibility(View.GONE);
@@ -36,17 +40,18 @@ public final class VideoHomeActivity extends MainActivity implements TextureView
         shade.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
         shade.setVisibility(View.GONE);
         root.addView(shade, 2, new FrameLayout.LayoutParams(-1, -1));
-        depth = new WallpaperDepth(this, root, findViewById(R.id.grid));
+        depth.attachVideo(video);
     }
 
     @Override protected void onResume() {
         super.onResume();
         resumed = true;
         if (depth != null) depth.start();
-        shade.setBackgroundColor((Config.load(this).wallpaperDim * 255 / 100) << 24);
-        File file = VideoSettingsActivity.videoFile(this);
         boolean enabled = getSharedPreferences("video_background", MODE_PRIVATE).getBoolean("enabled", false);
-        if (enabled && file.isFile() && file.length() > 0) {
+        if (!enabled) return; // onPause already released any previous playback.
+        File file = VideoSettingsActivity.videoFile(this);
+        if (file.isFile() && file.length() > 0) {
+            if (video == null) createVideoLayer();
             video.setVisibility(View.VISIBLE);
             if (video.isAvailable()) play(video.getSurfaceTexture());
         } else hideVideo();
@@ -93,6 +98,7 @@ public final class VideoHomeActivity extends MainActivity implements TextureView
     }
 
     private void hideVideo() {
+        if (video == null) return;
         releasePlayer();
         video.setVisibility(View.GONE);
         shade.setVisibility(View.GONE);

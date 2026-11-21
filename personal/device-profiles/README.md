@@ -21,7 +21,7 @@ tools/venv/bin/python -I personal/device-profiles/profiles.py restore chromecast
 
 設定檔採首頁欄位白名單。Wi-Fi 與影音帳密、NAS 路徑、裝置序號及系統安全設定由各裝置本機保存。同步工具另會拒絕含網路位址、URL 或 email 的設定檔。
 
-舊版首頁可用 --theme-only 擷取主題，JSON 會標記 scope 為 theme-only，並記錄擷取日期。安裝具備完整 ProfileProvider 入口的個人版後，才能改為完整首頁設定匯出。Chromecast 字體版目前具備此入口；Sony 影片版 3.5-video／versionCode 19 仍採 theme-only，私有偏好與實際排序由電視保留，不能將該快照當作完整還原檔。
+舊版首頁可用 --theme-only 擷取主題，JSON 會標記 scope 為 theme-only，並記錄擷取日期。安裝具備完整 ProfileProvider 入口的個人版後，才能改為完整首頁設定匯出。Chromecast 字體版目前具備此入口；Sony 影片版 3.6-video（versionCode 21）採 theme-only，私有偏好與實際排序由電視保留，不能將該快照當作完整還原檔。
 
 同步工具的公開資料檢查可用既有 Python 環境驗證。
 

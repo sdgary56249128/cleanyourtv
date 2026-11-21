@@ -57,6 +57,6 @@ tools/venv/bin/python -I tools/tv.py 'rm -f /data/local/tmp/background.mp4'
 
 兩台的建置與實機測試統一由[自動驗證腳本](../verification/README.md)執行，支援驗證原有設定與排序保存。
 
-目前個人建置為 3.5-video、versionCode 19，重用此 fork 的 v3.5 參考來源，保留六鍵學習與本機影片功能。
+目前建置為 3.6-video（versionCode 21），整合上游 v3.6.0。Wi-Fi 狀態列顯示連線和訊號強度。照片模式會略過影片圖層初始化，同列移動焦點時會沿用目前的景深。
 
-本次景深版本已通過 330 項 JVM 測試與 lint，並在 Sony KM-55X85L 完成實機自動回歸。已驗證六鍵與影片設定入口、上下導覽遠近、關閉模式、圖片邊緣覆蓋、idle 停止，以及原設定、排序、主題、停用清單與 Home 輔助服務保存。共用驗證預設只選 Chromecast；Sony 以 --device sony 或 --device all 明確選取，私人設定的 paused 可暫停該台。
+3.5-video 景深版本已通過 330 項 JVM 測試與 lint，並在 Sony KM-55X85L 完成實機自動回歸。已驗證六鍵與影片設定入口、上下導覽遠近、關閉模式、圖片邊緣覆蓋、idle 停止，以及原設定、排序、主題、停用清單與 Home 輔助服務保存。共用驗證預設只選 Chromecast；Sony 以 --device sony 或 --device all 明確選取，私人設定的 paused 可暫停該台。

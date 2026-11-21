@@ -19,8 +19,11 @@ final class WallpaperDepth {
     private final Activity activity;
     private final FrameLayout root;
     private final RecyclerView grid;
+    private final ImageView wallpaper;
+    private View video;
     private ValueAnimator animator;
     private float progress;
+    private float destination, lastScale = Float.NaN, lastY = Float.NaN;
     private boolean active, queued;
     private String mode = "off";
     private long frames;
@@ -36,10 +39,17 @@ final class WallpaperDepth {
 
     WallpaperDepth(Activity activity, FrameLayout root, RecyclerView grid) {
         this.activity = activity; this.root = root; this.grid = grid;
+        wallpaper = root.findViewWithTag("personal.wallpaper");
         root.getViewTreeObserver().addOnGlobalFocusChangeListener(focusListener);
         root.addOnLayoutChangeListener(layoutListener);
         grid.addOnScrollListener(scrollListener);
         current = new WeakReference<>(this);
+    }
+
+    void attachVideo(View layer) {
+        video = layer;
+        lastScale = Float.NaN;
+        apply();
     }
 
     void start() {
@@ -90,6 +100,11 @@ final class WallpaperDepth {
 
     private void move(float next, boolean animate) {
         next = DepthGeometry.clamp(next);
+        if (animate && next == destination && animator != null && animator.isRunning()) {
+            apply(); // Layout may have changed height during the existing transition.
+            return;
+        }
+        destination = next;
         if (Math.abs(next - progress) < .0001f) { cancel(); progress = next; apply(); return; }
         cancel();
         if (!animate || "off".equals(mode) || !ValueAnimator.areAnimatorsEnabled()) {
@@ -105,13 +120,18 @@ final class WallpaperDepth {
     private void apply() {
         float scale = DepthGeometry.scale(progress, mode);
         float translation = DepthGeometry.translation(progress, root.getHeight(), mode);
-        for (String tag : new String[]{"personal.wallpaper", "personal.video"}) {
-            View layer = root.findViewWithTag(tag);
-            if (layer == null) continue;
-            layer.setScaleX(scale); layer.setScaleY(scale);
-            layer.setTranslationY(translation);
-        }
+        if (scale == lastScale && translation == lastY) return;
+        lastScale = scale;
+        lastY = translation;
+        if (wallpaper != null) transform(wallpaper, scale, translation);
+        if (video != null) transform(video, scale, translation);
         frames++;
+    }
+
+    private static void transform(View layer, float scale, float y) {
+        layer.setScaleX(scale);
+        layer.setScaleY(scale);
+        layer.setTranslationY(y);
     }
 
     static JSONObject describe(Context context) throws Exception {
@@ -120,12 +140,14 @@ final class WallpaperDepth {
         result.put("active", depth != null && depth.active)
                 .put("saved_mode", DepthSettings.saved(context));
         if (depth == null) return result;
-        View layer = depth.root.findViewWithTag("personal.wallpaper");
+        ImageView layer = depth.wallpaper;
+        RecyclerView.LayoutManager layout = depth.grid.getLayoutManager();
         return result.put("effective_mode", depth.mode).put("progress", depth.progress)
+                .put("columns", layout instanceof GridLayoutManager ? ((GridLayoutManager) layout).getSpanCount() : 1)
                 .put("scale", layer == null ? 1f : layer.getScaleX())
                 .put("translation_y", layer == null ? 0f : layer.getTranslationY())
                 .put("height", depth.root.getHeight()).put("width", depth.root.getWidth())
-                .put("image_ready", layer instanceof ImageView && ((ImageView) layer).getDrawable() != null)
+                .put("image_ready", layer != null && layer.getDrawable() != null)
                 .put("animating", depth.animator != null && depth.animator.isRunning())
                 .put("frames", depth.frames).put("focus_position", depth.position())
                 .put("item_count", depth.grid.getAdapter() == null ? 0 : depth.grid.getAdapter().getItemCount());

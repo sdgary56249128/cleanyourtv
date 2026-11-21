@@ -49,4 +49,6 @@ bash personal/verification/verify.sh --skip-build --skip-host-tests
 
 兩台各有獨立程序與目標參數。型號不符、未授權、連線中斷、舊 APK、沒有壁紙或無法進入多列 App 網格都會報錯；關閉系統動畫／減少動態效果時，景深測試也會明確報錯，不會更改該設定。手動停用的景深選項可以暫時測試後還原。
 
-目前 Chromecast 個人版 versionCode 18、Sony 影片版 versionCode 19 均已完成景深實機自動驗證。兩台的設定與 App 排序保存檢查均通過，Sony 預設仍沿用自然照片及其六鍵／影片設定。
+3.5 系列的 Chromecast（versionCode 18）與 Sony（versionCode 19）皆已通過實機驗證。3.6 新增同列導覽檢查：焦點確實移到相鄰 App 時，景深圖層更新次數應維持不變。
+
+2026-11-21：Sony 3.6-video（21）通過實機驗證，還原原先的景深設定。Chromecast 3.6-personal（20）已在 Mac 通過單元測試、lint 與建置，本次僅部署 Sony。
